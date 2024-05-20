@@ -27,7 +27,3 @@ export declare const KEYLET_URITOKEN = 26;
 export declare const COMPARE_EQUAL = 1;
 export declare const COMPARE_LESS = 2;
 export declare const COMPARE_GREATER = 4;
-export * from './error';
-export * from './extern';
-export * from './sfcodes';
-export * from './tts';

@@ -10,8 +10,8 @@
     "compbuild": "esbuild contracts/index.ts --bundle --external:./contracts/utils/extern.ts --outfile=contracts/dist/index.js --format=esm",
     "cleanbuild": "python3 hook_cleaner.py contracts/dist/index.js contracts/dist/index.js",
     "prebuild": "yarn run compbuild && yarn run cleanbuild",
-    "build": "js2wasm-cli contracts/dist/index.js build/ && yarn run postbuild",
-    "postbuild": "rm -rf contracts/dist",
+    "build": "js2wasm-cli contracts/dist/index.js build/",
+    "_postbuild": "rm -rf contracts/dist",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
