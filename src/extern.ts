@@ -318,6 +318,7 @@ export declare function sto_validate(
 
 export declare function trace(
   message: string,
+  data: string,
   as_hex: any
 ): string | number
 
