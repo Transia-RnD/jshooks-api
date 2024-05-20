@@ -1,0 +1,24 @@
+{
+  "name": "jshooks-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/npm/src/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint ./src/**/* --ext .ts",
+    "format": "npx prettier --write ./src"
+  },
+  "author": {
+    "name": "Denis Angell",
+    "url": "https://github.com/dangell7"
+  },
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@tsconfig/node16": "^16.1.3",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {}
+}
