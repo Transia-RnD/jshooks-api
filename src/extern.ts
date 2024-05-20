@@ -3,10 +3,9 @@
 export declare function g(guard_id: number, maxiter: number): number
 
 export declare function accept(
-  read_ptr: number,
-  read_len: number,
+  message: string,
   error_code: number
-): number
+): string | number
 
 export declare function emit(
   write_ptr: number,
@@ -202,10 +201,9 @@ export declare function otxn_slot(slot_no: number): number
 export declare function otxn_type(): number
 
 export declare function rollback(
-  read_ptr: number,
-  read_len: number,
+  message: string,
   error_code: number
-): number
+): string | number
 
 export declare function slot(
   write_ptr: number,
@@ -319,12 +317,9 @@ export declare function sto_validate(
 ): number
 
 export declare function trace(
-  mread_ptr: number,
-  mread_len: number,
-  dread_ptr: number,
-  dread_len: number,
-  as_hex: number
-): number
+  message: string,
+  as_hex: any
+): string | number
 
 export declare function trace_float(
   read_ptr: number,

@@ -33,3 +33,4 @@ export const COMPARE_GREATER = 4
 export * from './error'
 export * from './extern'
 export * from './sfcodes'
+export * from './tts'
