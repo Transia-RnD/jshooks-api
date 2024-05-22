@@ -1,5 +1,5 @@
 import { myCustom } from "./utils/custom"
-import { ttINVOKE } from "jshooks-api"
+import { DOESNT_EXIST, ttINVOKE } from "jshooks-api"
 
 const Hook = (arg: any) => {
   trace('HookOnTT.js: Called.', false)
@@ -8,8 +8,10 @@ const Hook = (arg: any) => {
   const isThis = myCustom("this")
 
   const tt = otxn_type()
+  const txn = otxn_json()
+  trace(txn.Account, 1)
   if (tt !== ttINVOKE) {
-    return rollback('hook_on_tt: HookOn field is incorrectly set.', -37)
+    return rollback('hook_on_tt: HookOn field is incorrectly set.', DOESNT_EXIST)
   }
   return accept('HookOnTT.js: Finished.', 13)
 }

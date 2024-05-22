@@ -156,8 +156,10 @@ esbuild@^0.21.3:
     "@esbuild/win32-ia32" "0.21.3"
     "@esbuild/win32-x64" "0.21.3"
 
-"jshooks-api@file:..":
-  version "1.0.1"
+jshooks-api@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/jshooks-api/-/jshooks-api-1.0.0.tgz#62ac45531979791a12d90866c7a701f7a895eae6"
+  integrity sha512-SuV20EANEunqXfgWCJqxTKxGMT39xpYbXFP6O2JXD2WEe4Tmg/CGkRluiGz2w2jeukHvEZNgJDuQnPwaUlu3Nw==
   dependencies:
     "@transia/xrpl-models" "^2.9.1-alpha.0"
     "@tsconfig/node16" "^16.1.3"

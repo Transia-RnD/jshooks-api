@@ -1,6 +1,6 @@
 {
   "name": "jshooks-api",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/npm/src/index.js",
   "files": [
