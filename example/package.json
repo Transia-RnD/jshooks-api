@@ -10,7 +10,8 @@
     "compbuild": "esbuild contracts/index.ts --bundle --external:./contracts/utils/extern.ts --outfile=contracts/dist/index.js --format=esm",
     "cleanbuild": "python3 hook_cleaner.py contracts/dist/index.js contracts/dist/index.js",
     "prebuild": "yarn run compbuild && yarn run cleanbuild",
-    "build": "js2wasm-cli contracts/dist/index.js build/",
+    "compile": "js2wasm-cli contracts/dist/index.js build/",
+    "build": "yarn run compile",
     "_postbuild": "rm -rf contracts/dist",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
@@ -22,9 +23,11 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@tsconfig/node16": "^16.1.3",
+    "jshooks-api": "/Users/denisangell/projects/xrpl-labs/jshooks-api",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
     "esbuild": "^0.21.3"
-  }
+  },
+  "types": "@types/global.d.ts"
 }

@@ -17,6 +17,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@transia/xrpl-models": "^2.9.1-alpha.0",
     "@tsconfig/node16": "^16.1.3",
     "typescript": "^5.4.5"
   },

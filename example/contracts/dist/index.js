@@ -1,9 +1,13 @@
+var myCustom = (thisis) => {
+  return thisis == "that";
+};
+
 var ttINVOKE = 99;
 
-var transactiontype = () => otxn_type();
 var Hook = (arg) => {
   trace("HookOnTT.js: Called.", false);
-  const tt = transactiontype();
+  const isThis = myCustom("this");
+  const tt = otxn_type();
   if (tt !== ttINVOKE) {
     return rollback("hook_on_tt: HookOn field is incorrectly set.", -37);
   }
