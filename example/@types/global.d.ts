@@ -34,7 +34,7 @@ import {
   XRP,
   Amount,
   IssuedCurrencyAmount,
-} from "@transia/xrpl-models";
+} from "@transia/xahau-models";
 
 export type PreviousFields = { [field: string]: unknown };
 export type FinalFields = { [field: string]: unknown };
