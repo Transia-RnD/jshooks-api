@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Transaction } from '@transia/xrpl-models'
+import { STObject } from './objects'
 
 declare global {
   /********************************************************************************************************************* */
@@ -49,6 +50,12 @@ declare global {
 
   type OTXNTransaction = () => Transaction
   const otxn_json: OTXNTransaction
+
+  type PrepareTransaction = (txn: Transaction) => any
+  const prepare: PrepareTransaction
+
+  type STOToJson = () => STObject
+  const sto_to_json: STOToJson
 }
 
 export {}
