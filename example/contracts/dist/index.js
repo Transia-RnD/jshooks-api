@@ -1,6 +1,7 @@
 var Hook = (arg) => {
-  trace("HookOnTT.js: Called.", false);
-  const obj = sto_to_json();
-  obj.SignerEntry.Account;
-  return accept("HookOnTT.js: Finished.", 13);
+  const tx = otxn_json();
+  if (tx.TransactionType === "Payment" && tx.Account === "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn") {
+    return rollback("", DOESNT_EXIST);
+  }
+  return accept("", 13);
 };

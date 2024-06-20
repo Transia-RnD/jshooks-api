@@ -1,11 +1,18 @@
-import { SignerEntry } from "../@types/objects"
+import { Payment } from "@transia/xahau-models";
+import { DOESNT_EXIST } from "jshooks-api";
+import { accept, otxn_json, rollback } from "jshooks-api";
 
 const Hook = (arg: any) => {
-  trace('HookOnTT.js: Called.', false)
-  const obj = sto_to_json() as unknown as SignerEntry
-  obj.SignerEntry.Account
-  return accept('HookOnTT.js: Finished.', 13)
-}
+  const tx = otxn_json() as Payment;
+  if (
+    tx.TransactionType === "Payment" &&
+    tx.Account === "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn"
+  ) {
+    return rollback("", DOESNT_EXIST);
+  }
+
+  return accept('', 13);
+};
 
 // REQUIRED FOR ESBUILD
-export { Hook }
+export { Hook };
