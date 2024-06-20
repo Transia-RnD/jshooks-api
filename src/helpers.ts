@@ -1,9 +1,10 @@
-export const encodeArray = (a: number[]) => {
-  return a
-    .map((v: number) => v.toString(16).padStart(2, "0"))
-    .join("")
-    .toUpperCase();
-};
+import { rollback } from "./global";
+
+export const ASSERT = (x: boolean, code: number | 0) => {
+  if (!x) {
+    rollback(x.toString(), code)
+  }
+}
 
 export const uint8FromBuf = (buf: number[], offset: number = 0): number => {
   return buf[offset] >>> 0;
@@ -43,7 +44,7 @@ export function arrayEqual<T>(arr1: T[], arr2: T[]): boolean {
   return true;
 }
 
-export function encodeJson(obj: Record<string, any>): string {
+export function hexJson(obj: Record<string, any>): string {
   const jsonString = JSON.stringify(obj)
   let hexString = ''
   for (let i = 0; i < jsonString.length; i++) {
@@ -52,7 +53,7 @@ export function encodeJson(obj: Record<string, any>): string {
   return hexString.toUpperCase()
 }
 
-export function encodeString(v: string): string {
+export function hexString(v: string): string {
   let s = ''
   for (let i = 0; i < v.length; i++) {
     s += v.charCodeAt(i).toString(16).padStart(2, '0')
@@ -60,10 +61,27 @@ export function encodeString(v: string): string {
   return s.toUpperCase()
 }
 
-export function decodeHexArray(hexArray: number[]): Record<string, any> {
-  let jsonString = ''
-  for (let i = 0; i < hexArray.length; i++) {
-    jsonString += String.fromCharCode(hexArray[i])
+export const hexArray = (a: number[]) => {
+  return a
+    .map((v: number) => v.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
+};
+
+export function arrayToJson(a: number[]): Record<string, any> {
+  let s = ''
+  for (let i = 0; i < a.length; i++) {
+    s += String.fromCharCode(a[i])
   }
-  return JSON.parse(jsonString)
+  return JSON.parse(s)
+}
+
+export function readFrom(array: number[], startIndex: number, offset: number) {
+  return array.slice(startIndex, startIndex + offset);
+}
+
+export function writeTo(array: number[], startIndex: number, elements: number[]) {
+  for (let i = 0; i < elements.length; i++) {
+      array[startIndex + i] = elements[i];
+  }
 }
