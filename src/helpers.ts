@@ -1,5 +1,3 @@
-import { rollback } from "./global";
-
 export const ASSERT = (x: boolean, code: number | 0) => {
   if (!x) {
     rollback(x.toString(), code)
@@ -85,3 +83,4 @@ export function writeTo(array: number[], startIndex: number, elements: number[])
       array[startIndex + i] = elements[i];
   }
 }
+

@@ -3,42 +3,45 @@
 
 import { Transaction } from '@transia/xahau-models'
 
+declare global {
   /********************************************************************************************************************* */
 
   // Return number: int64
   //    An arbitrary return code you wish to return from your hook. This will be present in the metadata of the originating transaction.
-  type Hook = (reserved?: number) => bigint /** int64 */
+  export type Hook = (reserved?: number) => bigint /** int64 */
 
   // Arg: uint32 'what'
   //    0 = the emittted transaction to which this callback relates was successfully accepted into a ledger.
   //    1 = the emitted transaction to which the callback relates was NOT successfully accepted into a ledger before it expired.
   // Return number: int64
   //    An arbitrary return code you wish to return from your hook. This will be present in the metadata of the originating transaction.
-  type Callback = (emittedTxError?: number) => bigint /** int64 */
+  export type Callback = (emittedTxError?: number) => bigint /** int64 */
 
   /********************************************************************************************************************* */
 
   type Trace = (message: string, data: any, hex?: boolean) => void
 
-  declare const trace: Trace
+  const trace: Trace
 
   /********************************************************************************************************************* */
 
   // Rtrn
   type Accept = (error_msg: string, error_code: number) => bigint
 
-  declare const accept: Accept
+  const accept: Accept
 
   /********************************************************************************************************************* */
 
   type Rollback = (error_msg: string, error_code: number) => bigint
 
-  declare const rollback: Rollback
+  const rollback: Rollback
 
   /********************************************************************************************************************* */
 
+  // Cleaned DA
+
   type JSResHookAccount = () => number[] | number
-  declare const hook_account: JSResHookAccount
+  const hook_account: JSResHookAccount
 
   declare function otxn_burden(): number
   declare function otxn_generation(): number
@@ -61,7 +64,7 @@ import { Transaction } from '@transia/xahau-models'
     high: number[] | string
   ): number[] | number
 
-  declare function hook_param(key: number[] | string): number[] | number
+  declare function hook_param(key: number[] | string): nunber[] | number
   declare function hook_param_set(
     value: number[] | string,
     key: number[] | string,
@@ -76,7 +79,10 @@ import { Transaction } from '@transia/xahau-models'
     namespace: number[] | string,
     account: number[] | string
   ): number[] | number
-  declare function state_set(value: number[] | string, key: number[] | string): number
+  declare function state_set(
+    value: number[] | string,
+    key: number[] | string
+  ): number
   declare function state_foreign_set(
     value: number[] | string,
     key: number[] | string,
@@ -90,8 +96,16 @@ import { Transaction } from '@transia/xahau-models'
   declare function slot_float(index: number): number
   declare function slot_set(key: number[] | string, index: number): number
   declare function slot_size(index: number): number
-  declare function slot_subarray(index: number, id: number, next: number): number
-  declare function slot_subfield(index: number, id: number, next: number): number
+  declare function slot_subarray(
+    index: number,
+    id: number,
+    next: number
+  ): number
+  declare function slot_subfield(
+    index: number,
+    id: number,
+    next: number
+  ): number
   declare function slot_type(index: number, flags: number): number
 
   declare function float_set(exponent: number, mantissa: number): number
@@ -103,7 +117,11 @@ import { Transaction } from '@transia/xahau-models'
     denominator: number
   ): number
   declare function float_negate(float1: number): number
-  declare function float_compare(float1: number, float2: number, mode: number): number
+  declare function float_compare(
+    float1: number,
+    float2: number,
+    mode: number
+  ): number
   declare function float_sum(float1: number, float2: number): number
   declare function float_sto(
     write_ptr: number,
@@ -145,12 +163,15 @@ import { Transaction } from '@transia/xahau-models'
     index: number
   ): number | number[]
 
-  declare function sto_subfield(raw_sto: number[] | string, field_id: number): number
+  declare function sto_subfield(
+    raw_sto: number[] | string,
+    field_id: number
+  ): number
 
   declare function sto_validate(raw_sto: number[] | string): number | number[]
 
   // DA TODO: Does not exist in source, should it?
-  // function float_exponent(float1: number): number
+  // declare function float_exponent(float1: number): number
 
   declare function util_accid(raddr: any): number | string
 
@@ -166,72 +187,11 @@ import { Transaction } from '@transia/xahau-models'
 
   declare function util_sha512h(bytes: number[]): number[] | number
 
-  declare function util_verify(msg: number[], sig: number[], pub_key: number[]): number
+  declare function util_verify(
+    msg: number[],
+    sig: number[],
+    pub_key: number[]
+  ): number
+}
 
-  export {
-    Hook,
-    Callback,
-    trace,
-    accept,
-    rollback,
-    hook_account,
-    otxn_burden,
-    otxn_generation,
-    otxn_field,
-    otxn_id,
-    otxn_type,
-    otxn_slot,
-    otxn_param,
-    otxn_json,
-    hook_hash,
-    hook_again,
-    fee_base,
-    ledger_seq,
-    ledger_last_hash,
-    ledger_last_time,
-    ledger_nonce,
-    ledger_keylet,
-    hook_param,
-    hook_param_set,
-    hook_pos,
-    hook_skip,
-    state,
-    state_foreign,
-    state_set,
-    state_foreign_set,
-    slot,
-    slot_clear,
-    slot_count,
-    slot_float,
-    slot_set,
-    slot_size,
-    slot_subarray,
-    slot_subfield,
-    slot_type,
-    float_set,
-    float_multiply,
-    float_mulratio,
-    float_negate,
-    float_compare,
-    float_sum,
-    float_sto,
-    float_sto_set,
-    float_invert,
-    float_divide,
-    float_one,
-    float_mantissa,
-    float_sign,
-    float_int,
-    float_log,
-    float_root,
-    sto_emplace,
-    sto_erase,
-    sto_subarray,
-    sto_subfield,
-    sto_validate,
-    util_accid,
-    util_keylet,
-    util_raddr,
-    util_sha512h,
-    util_verify
-  }
+export {}
