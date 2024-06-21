@@ -7,6 +7,7 @@ export const ttREGULAR_KEY_SET = 5
 // export const ttNICKNAME_SET = 6 // deprecated
 export const ttOFFER_CREATE = 7
 export const ttOFFER_CANCEL = 8
+// export const ttCONTRACT = 9 // deprecated
 export const ttTICKET_CREATE = 10
 // export const ttSPINAL_TAP = 11 // deprecated
 export const ttSIGNER_LIST_SET = 12
