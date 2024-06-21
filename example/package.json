@@ -7,7 +7,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "compbuild": "esbuild contracts/index.ts --bundle --external:jshooks-api --outfile=contracts/dist/index.js --format=esm",
+    "compbuild": "esbuild contracts/index.ts --bundle --outfile=contracts/dist/index.js --format=esm",
     "cleanbuild": "python3 hook_cleaner.py contracts/dist/index.js contracts/dist/index.js",
     "prebuild": "yarn run compbuild && yarn run cleanbuild",
     "compile": "js2wasm-cli contracts/dist/index.js build/",
@@ -22,16 +22,14 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@transia/binary-models": "/Users/denisangell/projects/transia/binary-models",
     "@transia/xahau-models": "^2.7.3-alpha.27",
     "@tsconfig/node16": "^16.1.3",
     "add": "^2.0.6",
-    "jshooks-api": "/Users/denisangell/projects/xrpl-labs/jshooks-api",
+    "jshooks-api": "file:../",
     "typescript": "^5.4.5",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
     "esbuild": "^0.21.3"
-  },
-  "types": "@types/global.d.ts"
+  }
 }
