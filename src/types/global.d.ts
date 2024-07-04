@@ -3,6 +3,10 @@
 
 import { Transaction } from '@transia/xahau-models'
 
+export type AnyJson = {
+  [key: string]: AnyJson | boolean | string | number | string[] | boolean[] | number[] | AnyJson[]
+}
+
 declare global {
   /********************************************************************************************************************* */
 
