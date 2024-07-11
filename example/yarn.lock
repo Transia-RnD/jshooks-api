@@ -245,7 +245,7 @@ esbuild@^0.21.3:
     "@esbuild/win32-ia32" "0.21.3"
     "@esbuild/win32-x64" "0.21.3"
 
-jshooks-api@/Users/denisangell/projects/xrpl-labs/jshooks-api:
+"jshooks-api@file:..":
   version "1.0.2"
   dependencies:
     "@transia/xahau-models" "^2.7.3-alpha.27"
