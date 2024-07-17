@@ -173,7 +173,7 @@ export const assert = <T>(data: T) => {
 export const fallback = <T>(data: T, codes: number[] = [DOESNT_EXIST]) => {
   if (typeof data === 'number' && data < 0) {
     if (codes.includes(data)) {
-      return undefined as T extends true ? undefined : never
+      return undefined
     }
     rollback('api.error', data)
   }
