@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "typeRoots": [ "node_modules/@types", "@types" ],
+    "types": ["jshooks-api/globals"]
   },
-  "include": ["@types/*.d.ts", "contracts/**/*.ts"]
+  "include": ["contracts/**/*.ts"]
 }

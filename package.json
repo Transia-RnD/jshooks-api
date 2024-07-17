@@ -4,8 +4,13 @@
   "description": "",
   "main": "dist/npm/src/index.js",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "src/global.d.ts"
   ],
+  "exports": {
+    ".": "./dist/npm/src/index.js",
+    "./globals": "./src/types/global.d.ts"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src/**/* --ext .ts",
