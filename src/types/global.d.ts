@@ -282,6 +282,7 @@ declare global {
   /********************************************************************************************************************* */
   // FLOAT APIS
 
+  const float_one: () => ErrorCode | bigint
   const float_set: (exponent: number, mantissa: number) => ErrorCode | bigint
   const float_multiply: (f1: bigint, f2: bigint) => ErrorCode | bigint
   const float_mulratio: (
