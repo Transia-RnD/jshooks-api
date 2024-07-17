@@ -27,10 +27,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@transia/xahau-models@^2.7.3-alpha.27":
-  version "2.7.3-alpha.27"
-  resolved "https://registry.yarnpkg.com/@transia/xahau-models/-/xahau-models-2.7.3-alpha.27.tgz#701240c8795fc49e7f26199aa0c4dd516e16fa8b"
-  integrity sha512-ugqHxyCs0I7ztor+t3D7S094Vo4GbRSts7Cbzx26GjzPyJjxwFS0KBerJxauBhHHQELtjrQzmHLqhS1t0AwNTA==
+"@transia/xahau-models@^2.7.3-alpha.29":
+  version "2.7.3-alpha.29"
+  resolved "https://registry.yarnpkg.com/@transia/xahau-models/-/xahau-models-2.7.3-alpha.29.tgz#17f28e5ed37d6ae4b9bbc9215b0843afb6fab677"
+  integrity sha512-MmIS55eTOHcS3skCzS23043QW0m9tLLmuPqq0L5lDI5mOuTcl5Euk5WjD2WcETivxNvlOExqLmp21jmhseXMww==
   dependencies:
     "@types/node" "^20.4.2"
     ts-node "^10.9.1"

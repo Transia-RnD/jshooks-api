@@ -1,6 +1,6 @@
 {
   "name": "jshooks-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -22,7 +22,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@transia/xahau-models": "^2.7.3-alpha.27"
+    "@transia/xahau-models": "^2.7.3-alpha.29"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.3",
