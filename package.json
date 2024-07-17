@@ -2,13 +2,13 @@
   "name": "jshooks-api",
   "version": "1.0.2",
   "description": "",
-  "main": "dist/npm/src/index.js",
+  "main": "src/index.js",
   "files": [
     "dist/**/*",
     "src/global.d.ts"
   ],
   "exports": {
-    ".": "./dist/npm/src/index.js",
+    ".": "./src/index.js",
     "./globals": "./src/types/global.d.ts"
   },
   "scripts": {
