@@ -1,17 +1,5 @@
 import type { Transaction } from '@transia/xahau-models'
 
-export type AnyJson = {
-  [key: string]:
-    | AnyJson
-    | boolean
-    | string
-    | number
-    | string[]
-    | boolean[]
-    | number[]
-    | AnyJson[]
-}
-
 declare global {
   /********************************************************************************************************************* */
 
@@ -23,21 +11,7 @@ declare global {
    * @param hex     (Optional) Should it log formatted in HEX?
    * @returns       int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
    */
-  const trace: (
-    message: string | null,
-    data:
-      | string
-      | number
-      | Uint8Array
-      | Transaction
-      | boolean
-      | AnyJson
-      | string[]
-      | boolean[]
-      | number[]
-      | AnyJson[],
-    hex?: boolean
-  ) => number
+  const trace: (message: string | null, data: any, hex?: boolean) => number
 
   /********************************************************************************************************************* */
 
@@ -104,48 +78,21 @@ declare global {
   const rollback: (error_msg: string, error_code: number) => number
 
   /********************************************************************************************************************* */
-
-  /**
-   * Configure the amount of transactions this Hook is allowed to emit.
-   *
-   * @param txCount The max. amount of transactions this Hook is allowed to emit in its lifecycle
-   */
-  const etxn_reserve: (txCount: number) => undefined
-
-  /**
-   * Return the transaction that triggered this Hook execution as Object.
-   */
-  const otxn_json: () => Transaction // Triggering transaction
-
-  /**
-   * Format an Acocunt ID as r-address
-   *
-   * @param accountid The HEX accountid to return as r-address
-   */
-  const util_raddr: (accountid: string) => string
+  // UTIL APIS
 
   /**
    * Format an r-address as Account ID
    *
    * @param raddress The r-address to format as HEX accountid
    */
-  const util_accid: (raddress: string) => string
+  const util_accid: (raddress: number[] | string) => number | number[]
 
   /**
-   * Prepare a JSON transaction for being Emitted
+   * Format an Acocunt ID as r-address
    *
-   * @param txJson The transaction JSON, must be a complete transaction except for Account (always the Hook account)
+   * @param accountid The HEX accountid to return as r-address
    */
-  const prepare: (
-    txJson: Transaction | Omit<Transaction, 'Account'>
-  ) => Transaction
-
-  /**
-   * Emit a transaction, returns number on error, Uint8Array of emitted TX Hash in case of emit success
-   *
-   * @param txJson The TX JSON to emit
-   */
-  const emit: (txJson: Transaction) => number | Uint8Array
+  const util_raddr: (accountid: number[] | string) => number | number[]
 
   /**
    * Verify a cryptographic signature. If the public key is prefixed with 0xED then use ED25519, otherwise assume SECP256k1
@@ -156,36 +103,10 @@ declare global {
    * @returns Number 1: validation succeeded, the signature is valid, Number 0 if the signature is invalid
    */
   const util_verify: (
-    signedData: string | Uint8Array,
-    signature: string | Uint8Array,
-    pubkey: string | Uint8Array
+    signedData: number[] | string,
+    signature: number[] | string,
+    pubkey: number[] | string
   ) => number
-
-  /**
-   * Format an STO object (binary encoded ledger data) as JSON format
-   *
-   * @param blob The blob (e.g. serialized transaction)
-   * @returns Decoded JSON
-   */
-  const sto_to_json: (
-    blob: string | Uint8Array
-  ) => Uint8Array | number | string | AnyJson | Transaction
-
-  /**
-   * Validate an STO object (binary encoded ledger data)
-   *
-   * @param blob The blob (e.g. serialized transaction)
-   * @returns Returns number 1 if the STObject pointed to by read_ptr is a valid STObject, 0 if it isn't.
-   */
-  const sto_validate: (blob: string | Uint8Array) => number
-
-  /**
-   * Format JSON as an STO object (binary encoded ledger data)
-   *
-   * @param jsonobj JSON object
-   * @returns STO Object (binary encoded ledger data)
-   */
-  const sto_from_json: (jsonobj: AnyJson | Transaction) => string | Uint8Array
 
   /**
    * Compute an sha512-half over some data
@@ -193,27 +114,27 @@ declare global {
    * @param data The data to compute the hash over
    * @returns Sha512half hash
    */
-  const util_sha512h: (data: Uint8Array | string) => Uint8Array | string
+  const util_sha512h: (data: number[] | string) => number | number[]
 
-  /**
-   * Search for a keylet within a specified range on the current ledger
-   * Search the ledger for the first (lowest) Keylet of this type in this range
-   *
-   * @param low Pointer to the 34 byte serialised Keylet that represents the lower boundary of the Keylet range to search
-   * @param high Pointer to the 34 byte serialised Keylet that represents the upper boundary of the Keylet range to search
-   * @returns The number of bytes written (34 bytes) on success
-   */
-  const ledger_keylet: (
-    low: Uint8Array | string,
-    high: Uint8Array | string
-  ) => number
+  const util_keylet: (
+    keylet_type: number,
+    keylet_data_a?: number[] | string | number,
+    keylet_data_b?: number[] | string | number,
+    keylet_data_c?: number[] | string | number,
+    keylet_data_d?: number[] | string,
+    keylet_data_e?: number[] | string,
+    keylet_data_f?: number[] | string
+  ) => number | number[]
+
+  /********************************************************************************************************************* */
+  // HOOK APIS
 
   /**
    * Retreive the 20 byte Account ID the Hook is executing on
    *
    * @returns Account ID the Hook is executing on
    */
-  const hook_account: () => Uint8Array | string
+  const hook_account: () => number[]
 
   /**
    * Look up the hash of the hook installed on hook account at position hookno
@@ -221,15 +142,28 @@ declare global {
    * @param hookno The position in the hook chain the hook is located at, or -1 for the currently executing hook
    * @returns Namespace biased SHA512H of the currently executing Hook,
    */
-  const hook_hash: (hookno: number) => Uint8Array | string
+  const hook_hash: (hookno: number) => number | number[]
+
+  const hook_param_set: (
+    val: number[] | string,
+    key: number[] | string,
+    hash: number[] | string
+  ) => number
+  const hook_param: (key: number[] | string) => number | number[]
+  const hook_skip: (hash: number[] | string, flag: number) => number
+  const hook_pos: () => number
+  const hook_again: () => number
+
+  /********************************************************************************************************************* */
+  // OTXN APIS
 
   /**
    * Look up the value for a named parameter specified on the originating transaction (ttINVOKE only)
    *
-   * @param paramname Parameter's name
+   * @param name Parameter's name
    * @returns Param's value
    */
-  const otxn_param: (paramname: Uint8Array | string) => Uint8Array | string
+  const otxn_param: (name: number[] | string) => number | number[]
 
   /**
    * Return the Transaction Type of the originating transaction
@@ -274,12 +208,160 @@ declare global {
   const otxn_type: () => number
 
   /**
+   * Output the canonical hash of the originating transaction
+   *
+   * @param flag 0 = hash of the originating transaction, flag 1 & emit_failure = hash of emitting tx
+   * @returns TX Hash
+   */
+  const otxn_id: (flag: number) => number | number[]
+
+  const otxn_slot: (slotno: number) => number | number[]
+  const otxn_field: (field_id: number[] | string) => number | number[]
+  const otxn_json: () => Record<string, any> | Transaction // Triggering transaction
+
+  /********************************************************************************************************************* */
+  // FLOAT APIS
+  const float_set: (
+    exponent: number | bigint,
+    mantissa: number | bigint
+  ) => number | bigint
+  const float_multiply: (
+    f1: number | bigint,
+    f2: number | bigint
+  ) => number | bigint
+  const float_mulratio: (
+    f1: number | bigint,
+    round_up: number,
+    numerator: number,
+    denominator: number
+  ) => number | bigint
+  const float_negate: (f1: number | bigint) => number | bigint
+  const float_compare: (
+    f1: number | bigint,
+    f2: number | bigint,
+    mode: number
+  ) => number | bigint
+  const float_sum: (f1: number | bigint, f2: number | bigint) => number | bigint
+  const float_sto: (cur, isu, f1: number, field_code: number) => number | bigint
+  const float_sto_set: (buf: number[] | string) => number | bigint
+  const float_invert: (f1: number | bigint) => number | bigint
+  const float_divide: (
+    f1: number | bigint,
+    f2: number | bigint
+  ) => number | bigint
+  const float_mantissa: (f1: number | bigint) => number | bigint
+  const float_sign: (f1: number | bigint) => number | bigint
+  const float_int: (
+    f1: number | bigint,
+    decimal_places: number,
+    abs: number
+  ) => number | bigint
+  const float_log: (f1: number | bigint) => number | bigint
+  const float_root: (f1: number | bigint, n: number) => number | bigint
+
+  /********************************************************************************************************************* */
+  // STO APIS
+
+  /**
+   * Format an STO object (binary encoded ledger data) as JSON format
+   *
+   * @param blob The blob (e.g. serialized transaction)
+   * @returns Decoded JSON
+   */
+  const sto_to_json: (
+    blob: number[] | string
+  ) => number | Record<string, any> | Transaction
+
+  /**
+   * Validate an STO object (binary encoded ledger data)
+   *
+   * @param blob The blob (e.g. serialized transaction)
+   * @returns Returns number 1 if the STObject pointed to by read_ptr is a valid STObject, 0 if it isn't.
+   */
+  const sto_validate: (blob: number[] | string) => number
+
+  /**
+   * Format JSON as an STO object (binary encoded ledger data)
+   *
+   * @param jsonobj JSON object
+   * @returns STO Object (binary encoded ledger data)
+   */
+  const sto_from_json: (
+    jsonobj: Record<string, any> | Transaction
+  ) => number | number[]
+
+  const sto_subfield: (
+    sto: number[] | string,
+    field_id: number
+  ) => number | number[]
+  const sto_subarray: (
+    sto: number[] | string,
+    array_id: number
+  ) => number | number[]
+  const sto_emplace: (
+    sto: number[] | string,
+    field_bytes: number[] | string,
+    field_id: number
+  ) => number | number[]
+  const sto_erase: (
+    sto: number[] | string,
+    field_id: number
+  ) => number | number[]
+
+  /********************************************************************************************************************* */
+  // LEDGER APIS
+
+  /**
+   * Search for a keylet within a specified range on the current ledger
+   * Search the ledger for the first (lowest) Keylet of this type in this range
+   *
+   * @param low Pointer to the 34 byte serialised Keylet that represents the lower boundary of the Keylet range to search
+   * @param high Pointer to the 34 byte serialised Keylet that represents the upper boundary of the Keylet range to search
+   * @returns The number of bytes written (34 bytes) on success
+   */
+  const ledger_keylet: (
+    low: number[] | string,
+    high: number[] | string
+  ) => number | number[]
+
+  const ledger_last_hash: () => number | number[]
+  const ledger_last_time: () => number
+  const ledger_nonce: () => number | number[]
+  const ledger_seq: () => number
+
+  /********************************************************************************************************************* */
+  // SLOT APIS
+
+  const slot_json: (slotno: number) => number | number[]
+  const slot: (slotno: number) => number | number[]
+  const slot_clear: (slotno: number) => number | number[]
+  const slot_count: (slotno: number) => number | number[]
+  const slot_set: (kl: number[] | string, slotno: number) => number | number[]
+  const slot_size: (slotno: number) => number | number[]
+  const slot_subarray: (
+    parent_slotno: number,
+    array_id: number[] | string,
+    new_slotno: number
+  ) => number | number[]
+  const slot_subfield: (
+    parent_slotno: number,
+    field_id: number[] | string,
+    new_slotno: number
+  ) => number | number[]
+  const slot_type: (slotno: number, flags: number | string) => number | number[]
+  const slot_float: (slotno: number) => number | number[]
+  const meta_slot: (slotno: number) => number | number[]
+  const xpop_slot: (slotno_tx: number, slotno_meta: number) => number | number[]
+
+  /********************************************************************************************************************* */
+  // STATE APIS
+  /**
    * Get Hook State
    *
    * @param key Key of the Hook State
    * @returns Hook State value for key
    */
-  const state: (key: string | Uint8Array) => string | number | undefined | null
+  const state: (key: number[] | string) => number | number[]
 
   /**
    * Set Hook State
@@ -289,8 +371,8 @@ declare global {
    * @returns The number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_set: (
-    value: string | Uint8Array | undefined,
-    key: string | Uint8Array
+    value: number[] | string | undefined | null,
+    key: number[] | string
   ) => number
 
   /**
@@ -302,10 +384,10 @@ declare global {
    * @returns Hook State value for key
    */
   const state_foreign: (
-    key: string | Uint8Array,
-    namespace: string,
-    accountid: string
-  ) => string | number | undefined | null
+    key: number[] | string,
+    namespace: number[] | string | undefined | null,
+    accountid: number[] | string | undefined | null
+  ) => number | number[]
 
   /**
    * Set Foreign Hook State - Authorized, needs a Grant to allows this
@@ -317,135 +399,39 @@ declare global {
    * @returns The number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_foreign_set: (
-    value: string | Uint8Array | undefined,
-    key: string | Uint8Array,
-    namespace: string,
-    accountid: string
+    value: number[] | string | undefined | null,
+    key: number[] | string,
+    namespace: number[] | string | undefined | null,
+    accountid: number[] | string | undefined | null
   ) => number
+
+  /********************************************************************************************************************* */
+  // EMIT APIS
 
   /**
-   * Output the canonical hash of the originating transaction
+   * Prepare a JSON transaction for being Emitted
    *
-   * @param flag 0 = hash of the originating transaction, flag 1 & emit_failure = hash of emitting tx
-   * @returns TX Hash
+   * @param txJson The transaction JSON, must be a complete transaction except for Account (always the Hook account)
    */
-  const otxn_id: (flag: number) => Uint8Array | string
+  const prepare: (
+    txJson: Record<string, any> | Transaction
+  ) => Record<string, any> | Transaction
 
-  /********************************************************************************************************************* */
-  /***                                   LOTS TO DO BELOW - NEEDS MORE TYPES                                         *** */
-  /********************************************************************************************************************* */
+  /**
+   * Emit a transaction, returns number on error, number of emitted TX Hash in case of emit success
+   *
+   * @param txJson The TX JSON to emit
+   */
+  const emit: (txJson: Record<string, any> | Transaction) => number | number
 
-  const sto_subfield: (
-    sto: string | Uint8Array,
-    field_id: string | Uint8Array
-  ) => Uint8Array | number | string
-  const sto_subarray: (
-    sto: string | Uint8Array,
-    array_id: string | Uint8Array
-  ) => Uint8Array | number | string
-  const sto_emplace: (
-    sto: string | Uint8Array,
-    field_bytes: string | Uint8Array,
-    field_id: string | Uint8Array
-  ) => Uint8Array | number | string
-  const sto_erase: (
-    sto: string | Uint8Array,
-    field_id: string | Uint8Array
-  ) => Uint8Array | number | string
-  const util_keylet: (
-    keylet_type: number,
-    keylet_data_a: string | Uint8Array,
-    keylet_data_b: string | Uint8Array,
-    keylet_data_c: string | Uint8Array,
-    keylet_data_d: string | Uint8Array,
-    keylet_data_e: string | Uint8Array,
-    keylet_data_f: string | Uint8Array
-  ) => Uint8Array | number | string
-  const etxn_fee_base: (
-    txblob: Uint8Array | string
-  ) => Uint8Array | number | string
+  /**
+   * Configure the amount of transactions this Hook is allowed to emit.
+   *
+   * @param txCount The max. amount of transactions this Hook is allowed to emit in its lifecycle
+   */
+  const etxn_reserve: (txCount: number) => number
 
-  const slot_json: (slotno: number) => Uint8Array | number | string
-  const slot: (slotno: number) => Uint8Array | number | string
-  const slot_clear: (slotno: number) => Uint8Array | number | string
-  const slot_count: (slotno: number) => Uint8Array | number | string
-  const slot_set: (kl, slotno: number) => Uint8Array | number | string
-  const slot_size: (slotno: number) => Uint8Array | number | string
-  const slot_subarray: (
-    parent_slotno: number,
-    array_id: string | Uint8Array,
-    new_slotno: number
-  ) => Uint8Array | number | string
-  const slot_subfield: (
-    parent_slotno: number,
-    field_id: string | Uint8Array,
-    new_slotno: number
-  ) => Uint8Array | number | string
-  const slot_type: (
-    slotno: number,
-    flags: Uint8Array | string
-  ) => Uint8Array | number | string
-  const slot_float: (slotno: number) => Uint8Array | number | string
-
-  const meta_slot: (slotno: number) => Uint8Array | number | string
-  const xpop_slot: (
-    slotno_tx: number,
-    slotno_meta: number
-  ) => Uint8Array | number | string
-
-  const otxn_slot: (slotno: number) => Uint8Array | number | string
-  const otxn_field: (
-    field_id: string | Uint8Array
-  ) => Uint8Array | number | string
-
-  const float_set: (
-    exponent: number,
-    mantissa: number
-  ) => Uint8Array | number | string
-  const float_multiply: (f1: number, f2: number) => Uint8Array | number | string
-  const float_mulratio: (
-    f1: number,
-    round_up: number,
-    numerator: number,
-    denominator: number
-  ) => Uint8Array | number | string
-  const float_negate: (f1: number) => Uint8Array | number | string
-  const float_compare: (
-    f1: number,
-    f2: number,
-    mode: number
-  ) => Uint8Array | number | string
-  const float_sum: (f1: number, f2: number) => Uint8Array | number | string
-  const float_sto: (
-    cur,
-    isu,
-    f1: number,
-    field_code: number
-  ) => Uint8Array | number | string
-  const float_sto_set: (
-    buf: Uint8Array | string
-  ) => Uint8Array | number | string
-  const float_invert: (f1: number) => Uint8Array | number | string
-  const float_divide: (f1: number, f2: number) => Uint8Array | number | string
-  const float_mantissa: (f1: number) => Uint8Array | number | string
-  const float_sign: (f1: number) => Uint8Array | number | string
-  const float_int: (
-    f1: number,
-    decimal_places: number,
-    abs: number
-  ) => Uint8Array | number | string
-  const float_log: (f1: number) => Uint8Array | number | string
-  const float_root: (f1: number, n: number) => Uint8Array | number | string
-
-  const hook_param_set: (
-    val: Uint8Array | string,
-    key: Uint8Array | string,
-    hhash: Uint8Array | string
-  ) => number
-  const hook_param: (key: Uint8Array | string) => Uint8Array | string
-  const hook_skip: (hhash: Uint8Array | string, flag: number) => number
-
-  /********************************************************************************************************************* */
+  const etxn_fee_base: (txblob: number[] | string) => number
 }
 
 export {}
