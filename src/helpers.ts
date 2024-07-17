@@ -170,7 +170,7 @@ export const assert = <T>(data: T) => {
   return data as Exclude<T, number> extends never ? T : Exclude<T, number>
 }
 
-export const fallback = <T>(data: T, codes: number[]) => {
+export const fallback = <T>(data: T, codes: number[] = [DOESNT_EXIST]) => {
   if (typeof data === 'number' && data < 0) {
     if (codes.includes(data)) {
       return undefined as T extends true ? undefined : never
