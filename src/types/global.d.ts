@@ -1,4 +1,100 @@
 import type { Transaction } from '@transia/xahau-models'
+import {
+  SUCCESS,
+  OUT_OF_BOUNDS,
+  INTERNAL_ERROR,
+  TOO_BIG,
+  TOO_SMALL,
+  DOESNT_EXIST,
+  NO_FREE_SLOTS,
+  INVALID_ARGUMENT,
+  ALREADY_SET,
+  PREREQUISITE_NOT_MET,
+  FEE_TOO_LARGE,
+  EMISSION_FAILURE,
+  TOO_MANY_NONCES,
+  TOO_MANY_EMITTED_TXN,
+  NOT_IMPLEMENTED,
+  INVALID_ACCOUNT,
+  GUARD_VIOLATION,
+  INVALID_FIELD,
+  PARSE_ERROR,
+  RC_ROLLBACK,
+  RC_ACCEPT,
+  NO_SUCH_KEYLET,
+  NOT_AN_ARRAY,
+  NOT_AN_OBJECT,
+  INVALID_FLOAT,
+  DIVISION_BY_ZERO,
+  MANTISSA_OVERSIZED,
+  MANTISSA_UNDERSIZED,
+  EXPONENT_OVERSIZED,
+  EXPONENT_UNDERSIZED,
+  XFL_OVERFLOW,
+  NOT_IOU_AMOUNT,
+  NOT_AN_AMOUNT,
+  CANT_RETURN_NEGATIVE,
+  NOT_AUTHORIZED,
+  PREVIOUS_FAILURE_PREVENTS_RETRY,
+  TOO_MANY_PARAMS,
+  INVALID_TXN,
+  RESERVE_INSUFFICIENT,
+  COMPLEX_NOT_SUPPORTED,
+  DOES_NOT_MATCH,
+  INVALID_KEY,
+  NOT_A_STRING,
+  MEM_OVERLAP,
+  TOO_MANY_STATE_MODIFICATIONS,
+  TOO_MANY_NAMESPACES,
+} from '../error.ts'
+
+type ErrorCode =
+  | typeof SUCCESS
+  | typeof OUT_OF_BOUNDS
+  | typeof INTERNAL_ERROR
+  | typeof TOO_BIG
+  | typeof TOO_SMALL
+  | typeof DOESNT_EXIST
+  | typeof NO_FREE_SLOTS
+  | typeof INVALID_ARGUMENT
+  | typeof ALREADY_SET
+  | typeof PREREQUISITE_NOT_MET
+  | typeof FEE_TOO_LARGE
+  | typeof EMISSION_FAILURE
+  | typeof TOO_MANY_NONCES
+  | typeof TOO_MANY_EMITTED_TXN
+  | typeof NOT_IMPLEMENTED
+  | typeof INVALID_ACCOUNT
+  | typeof GUARD_VIOLATION
+  | typeof INVALID_FIELD
+  | typeof PARSE_ERROR
+  | typeof RC_ROLLBACK
+  | typeof RC_ACCEPT
+  | typeof NO_SUCH_KEYLET
+  | typeof NOT_AN_ARRAY
+  | typeof NOT_AN_OBJECT
+  | typeof INVALID_FLOAT
+  | typeof DIVISION_BY_ZERO
+  | typeof MANTISSA_OVERSIZED
+  | typeof MANTISSA_UNDERSIZED
+  | typeof EXPONENT_OVERSIZED
+  | typeof EXPONENT_UNDERSIZED
+  | typeof XFL_OVERFLOW
+  | typeof NOT_IOU_AMOUNT
+  | typeof NOT_AN_AMOUNT
+  | typeof CANT_RETURN_NEGATIVE
+  | typeof NOT_AUTHORIZED
+  | typeof PREVIOUS_FAILURE_PREVENTS_RETRY
+  | typeof TOO_MANY_PARAMS
+  | typeof INVALID_TXN
+  | typeof RESERVE_INSUFFICIENT
+  | typeof COMPLEX_NOT_SUPPORTED
+  | typeof DOES_NOT_MATCH
+  | typeof INVALID_KEY
+  | typeof NOT_A_STRING
+  | typeof MEM_OVERLAP
+  | typeof TOO_MANY_STATE_MODIFICATIONS
+  | typeof TOO_MANY_NAMESPACES
 
 declare global {
   /********************************************************************************************************************* */
@@ -11,7 +107,7 @@ declare global {
    * @param hex     (Optional) Should it log formatted in HEX?
    * @returns       int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
    */
-  const trace: (message: string | null, data: any, hex?: boolean) => number
+  const trace: (message: string | null, data: any, hex?: boolean) => ErrorCode
 
   /********************************************************************************************************************* */
 
@@ -22,7 +118,7 @@ declare global {
    * @returns        int64_t, An arbitrary return code you wish to return from your hook. This will
    *                 be present in the metadata of the originating transaction.
    */
-  type Hook = (reserved?: number) => number
+  type Hook = (reserved?: number) => ErrorCode
 
   /**
    * Definition of a Hook Callback - user defined function called in order to inform your hook about the
@@ -37,7 +133,7 @@ declare global {
    * @returns              int64_t, An arbitrary return code you wish to return from your hook.
    *                       This will be present in the metadata of the originating transaction.
    */
-  type Callback = (reserved?: number) => number
+  type Callback = (reserved?: number) => ErrorCode
 
   /********************************************************************************************************************* */
 
@@ -55,7 +151,7 @@ declare global {
    *               caller. By convention all Hook APIs return int64_t, but in this
    *               case nothing is returned.
    */
-  const accept: (msg: string, code: number) => number
+  const accept: (msg: string, code: number) => ErrorCode
 
   /********************************************************************************************************************* */
 
@@ -75,7 +171,7 @@ declare global {
    *                      the caller. By convention all Hook APIs return int64_t, but in this
    *                      case nothing is returned.
    */
-  const rollback: (error_msg: string, error_code: number) => number
+  const rollback: (error_msg: string, error_code: number) => ErrorCode
 
   /********************************************************************************************************************* */
   // UTIL APIS
@@ -85,14 +181,14 @@ declare global {
    *
    * @param raddress The r-address to format as HEX accountid
    */
-  const util_accid: (raddress: number[] | string) => number | number[]
+  const util_accid: (raddress: number[] | string) => ErrorCode | number[]
 
   /**
    * Format an Acocunt ID as r-address
    *
    * @param accountid The HEX accountid to return as r-address
    */
-  const util_raddr: (accountid: number[] | string) => number | number[]
+  const util_raddr: (accountid: number[] | string) => ErrorCode | number[]
 
   /**
    * Verify a cryptographic signature. If the public key is prefixed with 0xED then use ED25519, otherwise assume SECP256k1
@@ -106,7 +202,7 @@ declare global {
     signedData: number[] | string,
     signature: number[] | string,
     pubkey: number[] | string
-  ) => number
+  ) => 0 | 1
 
   /**
    * Compute an sha512-half over some data
@@ -114,7 +210,7 @@ declare global {
    * @param data The data to compute the hash over
    * @returns Sha512half hash
    */
-  const util_sha512h: (data: number[] | string) => number | number[]
+  const util_sha512h: (data: number[] | string) => ErrorCode | number[]
 
   const util_keylet: (
     keylet_type: number,
@@ -124,7 +220,7 @@ declare global {
     keylet_data_d?: number[] | string,
     keylet_data_e?: number[] | string,
     keylet_data_f?: number[] | string
-  ) => number | number[]
+  ) => ErrorCode | number[]
 
   /********************************************************************************************************************* */
   // HOOK APIS
@@ -134,7 +230,7 @@ declare global {
    *
    * @returns Account ID the Hook is executing on
    */
-  const hook_account: () => number[]
+  const hook_account: () => ErrorCode | number[]
 
   /**
    * Look up the hash of the hook installed on hook account at position hookno
@@ -142,17 +238,17 @@ declare global {
    * @param hookno The position in the hook chain the hook is located at, or -1 for the currently executing hook
    * @returns Namespace biased SHA512H of the currently executing Hook,
    */
-  const hook_hash: (hookno: number) => number | number[]
+  const hook_hash: (hookno: number) => ErrorCode | number[]
 
   const hook_param_set: (
     val: number[] | string,
     key: number[] | string,
     hash: number[] | string
   ) => number
-  const hook_param: (key: number[] | string) => number | number[]
-  const hook_skip: (hash: number[] | string, flag: number) => number
-  const hook_pos: () => number
-  const hook_again: () => number
+  const hook_param: (key: number[] | string) => ErrorCode | number[]
+  const hook_skip: (hash: number[] | string, flag: number) => ErrorCode | number
+  const hook_pos: () => ErrorCode | number
+  const hook_again: () => ErrorCode | number
 
   /********************************************************************************************************************* */
   // OTXN APIS
@@ -163,14 +259,14 @@ declare global {
    * @param name Parameter's name
    * @returns Param's value
    */
-  const otxn_param: (name: number[] | string) => number | number[]
+  const otxn_param: (name: number[] | string) => ErrorCode | number[]
 
   /**
    * Return the Transaction Type of the originating transaction
    *
    * @returns number as Transaction Type
    */
-  const otxn_type: () => number
+  const otxn_type: () => ErrorCode | number
 
   /**
    * Output the canonical hash of the originating transaction
@@ -178,42 +274,48 @@ declare global {
    * @param flag 0 = hash of the originating transaction, flag 1 & emit_failure = hash of emitting tx
    * @returns TX Hash
    */
-  const otxn_id: (flag: number) => number | number[]
+  const otxn_id: (flag: number) => ErrorCode | number[]
 
-  const otxn_slot: (slotno: number) => number | number[]
-  const otxn_field: (field_id: number[] | string) => number | number[]
-  const otxn_json: () => Record<string, any> | Transaction // Triggering transaction
+  const otxn_slot: (slotno: number) => ErrorCode | number[]
+  const otxn_field: (field_id: number[] | string) => ErrorCode | number[]
+  const otxn_json: () => ErrorCode | Record<string, any> | Transaction // Triggering transaction
 
   /********************************************************************************************************************* */
   // FLOAT APIS
 
-  const float_set: (
-    exponent: number | bigint,
-    mantissa: number | bigint
-  ) => number | bigint
-  const float_multiply: (f1: bigint, f2: bigint) => number | bigint
+  const float_set: (exponent: number, mantissa: number) => ErrorCode | bigint
+  const float_multiply: (f1: bigint, f2: bigint) => ErrorCode | bigint
   const float_mulratio: (
     f1: bigint,
     round_up: number,
     numerator: number,
     denominator: number
-  ) => number | bigint
-  const float_negate: (f1: bigint) => number | bigint
-  const float_compare: (f1: bigint, f2: bigint, mode: number) => number | bigint
-  const float_sum: (f1: bigint, f2: bigint) => number | bigint
-  const float_sto: (cur, isu, f1: bigint, field_code: number) => number | bigint
-  const float_sto_set: (buf: number[] | string) => number | bigint
-  const float_invert: (f1: bigint) => number | bigint
-  const float_divide: (f1: bigint, f2: bigint) => number | bigint
-  const float_mantissa: (f1: bigint) => number | bigint
-  const float_sign: (f1: bigint) => number | bigint
+  ) => ErrorCode | bigint
+  const float_negate: (f1: bigint) => ErrorCode | bigint
+  const float_compare: (
+    f1: bigint,
+    f2: bigint,
+    mode: number
+  ) => ErrorCode | bigint
+  const float_sum: (f1: bigint, f2: bigint) => ErrorCode | bigint
+  const float_sto: (
+    cur,
+    isu,
+    f1: bigint,
+    field_code: number
+  ) => ErrorCode | bigint
+  const float_sto_set: (buf: number[] | string) => ErrorCode | bigint
+  const float_invert: (f1: bigint) => ErrorCode | bigint
+  const float_divide: (f1: bigint, f2: bigint) => ErrorCode | bigint
+  const float_mantissa: (f1: bigint) => ErrorCode | bigint
+  const float_sign: (f1: bigint) => ErrorCode | bigint
   const float_int: (
     f1: bigint,
     decimal_places: number,
     abs: number
-  ) => number | bigint
-  const float_log: (f1: bigint) => number | bigint
-  const float_root: (f1: bigintt, n: number) => number | bigint
+  ) => ErrorCode | bigint
+  const float_log: (f1: bigint) => ErrorCode | bigint
+  const float_root: (f1: bigintt, n: number) => ErrorCode | bigint
 
   /********************************************************************************************************************* */
   // STO APIS
@@ -226,7 +328,7 @@ declare global {
    */
   const sto_to_json: (
     blob: number[] | string
-  ) => number | Record<string, any> | Transaction
+  ) => ErrorCode | Record<string, any> | Transaction
 
   /**
    * Validate an STO object (binary encoded ledger data)
@@ -234,7 +336,7 @@ declare global {
    * @param blob The blob (e.g. serialized transaction)
    * @returns Returns number 1 if the STObject pointed to by read_ptr is a valid STObject, 0 if it isn't.
    */
-  const sto_validate: (blob: number[] | string) => number
+  const sto_validate: (blob: number[] | string) => ErrorCode | number
 
   /**
    * Format JSON as an STO object (binary encoded ledger data)
@@ -244,25 +346,25 @@ declare global {
    */
   const sto_from_json: (
     jsonobj: Record<string, any> | Transaction
-  ) => number | number[]
+  ) => ErrorCode | number[]
 
   const sto_subfield: (
     sto: number[] | string,
     field_id: number
-  ) => number | number[]
+  ) => ErrorCode | number[]
   const sto_subarray: (
     sto: number[] | string,
     array_id: number
-  ) => number | number[]
+  ) => ErrorCode | number[]
   const sto_emplace: (
     sto: number[] | string,
     field_bytes: number[] | string,
     field_id: number
-  ) => number | number[]
+  ) => ErrorCode | number[]
   const sto_erase: (
     sto: number[] | string,
     field_id: number
-  ) => number | number[]
+  ) => ErrorCode | number[]
 
   /********************************************************************************************************************* */
   // LEDGER APIS
@@ -278,36 +380,42 @@ declare global {
   const ledger_keylet: (
     low: number[] | string,
     high: number[] | string
-  ) => number | number[]
+  ) => ErrorCode | number[]
 
-  const ledger_last_hash: () => number | number[]
-  const ledger_last_time: () => number
-  const ledger_nonce: () => number | number[]
-  const ledger_seq: () => number
+  const ledger_last_hash: () => ErrorCode | number[]
+  const ledger_last_time: () => ErrorCode | number
+  const ledger_nonce: () => ErrorCode | number[]
+  const ledger_seq: () => ErrorCode | number
 
   /********************************************************************************************************************* */
   // SLOT APIS
 
-  const slot_json: (slotno: number) => number | number[]
-  const slot: (slotno: number) => number | number[]
-  const slot_clear: (slotno: number) => number | number[]
-  const slot_count: (slotno: number) => number | number[]
-  const slot_set: (kl: number[] | string, slotno: number) => number | number[]
-  const slot_size: (slotno: number) => number | number[]
+  const slot_json: (slotno: number) => ErrorCode | number[]
+  const slot: (slotno: number) => ErrorCode | number[]
+  const slot_clear: (slotno: number) => ErrorCode | number[]
+  const slot_count: (slotno: number) => ErrorCode | number[]
+  const slot_set: (
+    kl: number[] | string,
+    slotno: number
+  ) => ErrorCode | number[]
+  const slot_size: (slotno: number) => ErrorCode | number[]
   const slot_subarray: (
     parent_slotno: number,
     array_id: number[] | string,
     new_slotno: number
-  ) => number | number[]
+  ) => ErrorCode | number[]
   const slot_subfield: (
     parent_slotno: number,
     field_id: number[] | string,
     new_slotno: number
-  ) => number | number[]
-  const slot_type: (slotno: number, flags: number | string) => number | number[]
-  const slot_float: (slotno: number) => number | number[]
-  const meta_slot: (slotno: number) => number | number[]
-  const xpop_slot: (slotno_tx: number, slotno_meta: number) => number | number[]
+  ) => ErrorCode | number[]
+  const slot_type: (slotno: number, flags: number) => ErrorCode | number[]
+  const slot_float: (slotno: number) => ErrorCode | number[]
+  const meta_slot: (slotno: number) => ErrorCode | number[]
+  const xpop_slot: (
+    slotno_tx: number,
+    slotno_meta: number
+  ) => ErrorCode | number[]
 
   /********************************************************************************************************************* */
   // STATE APIS
@@ -317,7 +425,7 @@ declare global {
    * @param key Key of the Hook State
    * @returns Hook State value for key
    */
-  const state: (key: number[] | string) => number | number[]
+  const state: (key: number[] | string) => ErrorCode | number[]
 
   /**
    * Set Hook State
@@ -329,7 +437,7 @@ declare global {
   const state_set: (
     value: number[] | string | undefined | null,
     key: number[] | string
-  ) => number
+  ) => ErrorCode | number
 
   /**
    * Get Foreign Hook State (belonging to another account)
@@ -343,7 +451,7 @@ declare global {
     key: number[] | string,
     namespace: number[] | string | undefined | null,
     accountid: number[] | string | undefined | null
-  ) => number | number[]
+  ) => ErrorCode | number[]
 
   /**
    * Set Foreign Hook State - Authorized, needs a Grant to allows this
@@ -359,7 +467,7 @@ declare global {
     key: number[] | string,
     namespace: number[] | string | undefined | null,
     accountid: number[] | string | undefined | null
-  ) => number
+  ) => ErrorCode | number
 
   /********************************************************************************************************************* */
   // EMIT APIS
@@ -371,23 +479,23 @@ declare global {
    */
   const prepare: (
     txJson: Record<string, any> | Transaction
-  ) => Record<string, any> | Transaction
+  ) => ErrorCode | Record<string, any> | Transaction
 
   /**
    * Emit a transaction, returns number on error, number of emitted TX Hash in case of emit success
    *
    * @param txJson The TX JSON to emit
    */
-  const emit: (txJson: Record<string, any> | Transaction) => number | number
+  const emit: (txJson: Record<string, any> | Transaction) => ErrorCode | number
 
   /**
    * Configure the amount of transactions this Hook is allowed to emit.
    *
    * @param txCount The max. amount of transactions this Hook is allowed to emit in its lifecycle
    */
-  const etxn_reserve: (txCount: number) => number
+  const etxn_reserve: (txCount: number) => ErrorCode | number
 
-  const etxn_fee_base: (txblob: number[] | string) => number
+  const etxn_fee_base: (txblob: number[] | string) => ErrorCode | number
 }
 
 export {}
