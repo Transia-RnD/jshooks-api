@@ -221,43 +221,34 @@ declare global {
 
   /********************************************************************************************************************* */
   // FLOAT APIS
+
   const float_set: (
     exponent: number | bigint,
     mantissa: number | bigint
   ) => number | bigint
-  const float_multiply: (
-    f1: number | bigint,
-    f2: number | bigint
-  ) => number | bigint
+  const float_multiply: (f1: bigint, f2: bigint) => number | bigint
   const float_mulratio: (
-    f1: number | bigint,
+    f1: bigint,
     round_up: number,
     numerator: number,
     denominator: number
   ) => number | bigint
-  const float_negate: (f1: number | bigint) => number | bigint
-  const float_compare: (
-    f1: number | bigint,
-    f2: number | bigint,
-    mode: number
-  ) => number | bigint
-  const float_sum: (f1: number | bigint, f2: number | bigint) => number | bigint
-  const float_sto: (cur, isu, f1: number, field_code: number) => number | bigint
+  const float_negate: (f1: bigint) => number | bigint
+  const float_compare: (f1: bigint, f2: bigint, mode: number) => number | bigint
+  const float_sum: (f1: bigint, f2: bigint) => number | bigint
+  const float_sto: (cur, isu, f1: bigint, field_code: number) => number | bigint
   const float_sto_set: (buf: number[] | string) => number | bigint
-  const float_invert: (f1: number | bigint) => number | bigint
-  const float_divide: (
-    f1: number | bigint,
-    f2: number | bigint
-  ) => number | bigint
-  const float_mantissa: (f1: number | bigint) => number | bigint
-  const float_sign: (f1: number | bigint) => number | bigint
+  const float_invert: (f1: bigint) => number | bigint
+  const float_divide: (f1: bigint, f2: bigint) => number | bigint
+  const float_mantissa: (f1: bigint) => number | bigint
+  const float_sign: (f1: bigint) => number | bigint
   const float_int: (
-    f1: number | bigint,
+    f1: bigint,
     decimal_places: number,
     abs: number
   ) => number | bigint
-  const float_log: (f1: number | bigint) => number | bigint
-  const float_root: (f1: number | bigint, n: number) => number | bigint
+  const float_log: (f1: bigint) => number | bigint
+  const float_root: (f1: bigintt, n: number) => number | bigint
 
   /********************************************************************************************************************* */
   // STO APIS
