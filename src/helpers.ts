@@ -22,28 +22,38 @@ type VarModelArray = Model[]
 
 export { Bool, UInt8, UInt16, UInt32, UInt64, UInt224, Model, VarModelArray }
 
-export const ASSERT = (x: boolean, code: number | 0) => {
-  if (!x) {
-    rollback(x.toString(), code)
-  }
+// Not to change this to arrow functions: see https://github.com/microsoft/TypeScript/issues/34523
+export const ASSERT: (
+  cond: boolean,
+  msg?: string,
+  code?: number
+) => asserts cond = (cond, msg = '', code = 0) => {
+  if (!cond) rollback(`Assertion failed: ${msg}`, code)
 }
 
 export function uint8ToHex(value: UInt8): string {
-  if (value < 0 || value > 255) {
+  if (value < 0 || value > 0xff) {
     throw Error(`Integer ${value} is out of range for uint8 (0-255)`)
   }
   return value.toString(16).padStart(2, '0').toUpperCase()
 }
 
+export function uint16ToHex(value: UInt16): string {
+  if (value < 0 || value > 0xffff) {
+    throw Error(`Integer ${value} is out of range for uint16 (0-65535)`)
+  }
+  return value.toString(16).padStart(4, '0').toUpperCase()
+}
+
 export function uint32ToHex(value: UInt32): string {
-  if (value < 0 || value > 2 ** 32 - 1) {
+  if (value < 0 || value > 0xffff_ffff) {
     throw Error(`Integer ${value} is out of range for uint32 (0-4294967295)`)
   }
   return value.toString(16).padStart(8, '0').toUpperCase()
 }
 
 export function uint64ToHex(value: UInt64): string {
-  if (value < 0 || value > BigInt(18446744073709551615n)) {
+  if (value < 0 || value > BigInt(0xffff_ffff_ffff_ffffn)) {
     throw Error(
       `Integer ${value} is out of range for uint64 (0-18446744073709551615)`
     )
@@ -56,7 +66,7 @@ export function uint224ToHex(value: UInt224): string {
     value < 0 ||
     value >
       BigInt(
-        26959946667150639794667015087019630673637144422540572481103610249215n
+        0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff_ffffn
       )
   ) {
     throw Error(
@@ -145,22 +155,16 @@ export function writeTo(
 
 // Hook API Helpers
 
-export const hookParam = (
-  key: string,
-  isHex: boolean | false
-): number[] | number => {
+export const hookParam = (key: string, isHex = false) => {
   return hook_param(isHex ? key : encodeString(key))
 }
 
-export const otxnParam = (
-  key: string,
-  isHex: boolean | false
-): number[] | number => {
+export const otxnParam = (key: string, isHex = false) => {
   return otxn_param(isHex ? key : encodeString(key))
 }
 
-export const getState = (key: string) => {
-  return hook_param(encodeString(key))
+export const getState = (key: string, isHex = false) => {
+  return state(isHex ? key : encodeString(key))
 }
 
 export const assert = <T>(data: T) => {
