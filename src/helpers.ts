@@ -1,3 +1,5 @@
+import { DOESNT_EXIST } from './error'
+
 // Types
 type Bool = boolean
 type UInt8 = number
@@ -18,17 +20,7 @@ type Model = {
 }
 type VarModelArray = Model[]
 
-export {
-  Bool,
-  UInt8,
-  UInt16,
-  UInt32,
-  UInt64,
-  UInt224,
-  Model,
-  VarModelArray,
-}
-
+export { Bool, UInt8, UInt16, UInt32, UInt64, UInt224, Model, VarModelArray }
 
 export const ASSERT = (x: boolean, code: number | 0) => {
   if (!x) {
@@ -95,11 +87,11 @@ export function hexToUInt224(hex: string): UInt224 {
 }
 
 export function arrayEqual<T>(arr1: T[], arr2: T[]): boolean {
-  if (arr1.length !== arr2.length) return false;
+  if (arr1.length !== arr2.length) return false
   for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) return false;
+    if (arr1[i] !== arr2[i]) return false
   }
-  return true;
+  return true
 }
 
 export const encodeJson = (data: any) => {
@@ -120,10 +112,10 @@ export function encodeString(v: string): string {
 
 export const encodeArray = (a: number[]) => {
   return a
-    .map((v: number) => v.toString(16).padStart(2, "0"))
-    .join("")
-    .toUpperCase();
-};
+    .map((v: number) => v.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
+}
 
 export function decodeArray(a: number[]): string {
   let s = ''
@@ -138,25 +130,52 @@ export function decodeJson(a: number[]): Record<string, any> {
 }
 
 export function readFrom(array: number[], startIndex: number, offset: number) {
-  return array.slice(startIndex, startIndex + offset);
+  return array.slice(startIndex, startIndex + offset)
 }
 
-export function writeTo(array: number[], startIndex: number, elements: number[]) {
+export function writeTo(
+  array: number[],
+  startIndex: number,
+  elements: number[]
+) {
   for (let i = 0; i < elements.length; i++) {
-      array[startIndex + i] = elements[i];
+    array[startIndex + i] = elements[i]
   }
 }
 
 // Hook API Helpers
 
-export const hookParam = (key: string, isHex: boolean | false): number[] | number => {
+export const hookParam = (
+  key: string,
+  isHex: boolean | false
+): number[] | number => {
   return hook_param(isHex ? key : encodeString(key))
 }
 
-export const otxnParam = (key: string, isHex: boolean | false): number[] | number => {
+export const otxnParam = (
+  key: string,
+  isHex: boolean | false
+): number[] | number => {
   return otxn_param(isHex ? key : encodeString(key))
 }
 
 export const getState = (key: string) => {
   return hook_param(encodeString(key))
+}
+
+export const assert = <T>(data: T) => {
+  if (typeof data === 'number' && data < 0) {
+    rollback('assert.error', data)
+  }
+  return data as Exclude<T, number> extends never ? T : Exclude<T, number>
+}
+
+export const fallback = <T>(data: T, codes: number[]) => {
+  if (typeof data === 'number' && data < 0) {
+    if (codes.includes(data)) {
+      return undefined as T extends true ? undefined : never
+    }
+    rollback('api.error', data)
+  }
+  return data as Exclude<T, number> extends never ? T : Exclude<T, number>
 }
