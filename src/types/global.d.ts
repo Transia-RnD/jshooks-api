@@ -48,7 +48,7 @@ import {
   TOO_MANY_NAMESPACES,
 } from '../error.ts'
 
-type ErrorCode =
+export type ErrorCode =
   | typeof SUCCESS
   | typeof OUT_OF_BOUNDS
   | typeof INTERNAL_ERROR

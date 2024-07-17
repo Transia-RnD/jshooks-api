@@ -1,6 +1,6 @@
 import '../src/types/global'
-import type { AnyJson } from '../src/types/global'
-export type { AnyJson }
+import type { ErrorCode } from '../src/types/global'
+export type { ErrorCode }
 export * from './error'
 export * from './sfcodes'
 export * from './tts'
