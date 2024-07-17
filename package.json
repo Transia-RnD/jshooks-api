@@ -1,15 +1,14 @@
 {
   "name": "jshooks-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/npm/src/index.js",
   "files": [
-    "dist/**/*",
-    "src/global.d.ts"
+    "dist/**/*"
   ],
   "exports": {
     ".": "./dist/npm/src/index.js",
-    "./globals": "./src/types/global.d.ts"
+    "./globals": "./dist/npm/src/types/global.d.ts"
   },
   "scripts": {
     "build": "tsc",
