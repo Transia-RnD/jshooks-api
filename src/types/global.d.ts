@@ -104,7 +104,7 @@ declare global {
    *
    * @param message The 'logging key', message to output before the buffer (can be null)
    * @param data    The data to log
-   * @param hex     (Optional) Should it log formatted in HEX?
+   * @param hex     (Optional) Should it log formatted in HEX? (default: false)
    * @returns       int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
    */
   const trace: (message: string | null, data: any, hex?: boolean) => ErrorCode
@@ -180,15 +180,17 @@ declare global {
    * Format an r-address as Account ID
    *
    * @param raddress The r-address to format as HEX accountid
+   * @returns HEX Account ID
    */
-  const util_accid: (raddress: number[] | string) => ErrorCode | number[]
+  const util_accid: (raddress: string) => ErrorCode | number[]
 
   /**
    * Format an Acocunt ID as r-address
    *
    * @param accountid The HEX accountid to return as r-address
+   * @returns r-address
    */
-  const util_raddr: (accountid: number[] | string) => ErrorCode | number[]
+  const util_raddr: (accountid: number[] | string) => ErrorCode | string
 
   /**
    * Verify a cryptographic signature. If the public key is prefixed with 0xED then use ED25519, otherwise assume SECP256k1
@@ -216,10 +218,7 @@ declare global {
     keylet_type: number,
     keylet_data_a?: number[] | string | number,
     keylet_data_b?: number[] | string | number,
-    keylet_data_c?: number[] | string | number,
-    keylet_data_d?: number[] | string,
-    keylet_data_e?: number[] | string,
-    keylet_data_f?: number[] | string
+    keylet_data_c?: number[] | string | number
   ) => ErrorCode | number[]
 
   /********************************************************************************************************************* */
@@ -271,13 +270,13 @@ declare global {
   /**
    * Output the canonical hash of the originating transaction
    *
-   * @param flag 0 = hash of the originating transaction, flag 1 & emit_failure = hash of emitting tx
+   * @param flag 0 = hash of the originating transaction, flag 1 & emit_failure = hash of emitting tx (default: 0)
    * @returns TX Hash
    */
-  const otxn_id: (flag: number) => ErrorCode | number[]
+  const otxn_id: (flag?: number) => ErrorCode | number[]
 
   const otxn_slot: (slotno: number) => ErrorCode | number[]
-  const otxn_field: (field_id: number[] | string) => ErrorCode | number[]
+  const otxn_field: (field_id: number) => ErrorCode | number[]
   const otxn_json: () => ErrorCode | Record<string, any> | Transaction // Triggering transaction
 
   /********************************************************************************************************************* */
@@ -296,15 +295,15 @@ declare global {
     f1: bigint,
     f2: bigint,
     mode: number
-  ) => ErrorCode | bigint
+  ) => ErrorCode | number
   const float_sum: (f1: bigint, f2: bigint) => ErrorCode | bigint
   const float_sto: (
-    cur,
-    isu,
+    cur: number[] | string | undefined,
+    isu: number[] | string | undefined,
     f1: bigint,
     field_code: number
-  ) => ErrorCode | bigint
-  const float_sto_set: (buf: number[] | string) => ErrorCode | bigint
+  ) => ErrorCode | number[]
+  const float_sto_set: (buf: number[] | string) => ErrorCode | number
   const float_invert: (f1: bigint) => ErrorCode | bigint
   const float_divide: (f1: bigint, f2: bigint) => ErrorCode | bigint
   const float_mantissa: (f1: bigint) => ErrorCode | bigint
@@ -313,7 +312,7 @@ declare global {
     f1: bigint,
     decimal_places: number,
     abs: number
-  ) => ErrorCode | bigint
+  ) => ErrorCode | number
   const float_log: (f1: bigint) => ErrorCode | bigint
   const float_root: (f1: bigintt, n: number) => ErrorCode | bigint
 
@@ -351,11 +350,11 @@ declare global {
   const sto_subfield: (
     sto: number[] | string,
     field_id: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | number
   const sto_subarray: (
     sto: number[] | string,
     array_id: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | number
   const sto_emplace: (
     sto: number[] | string,
     field_bytes: number[] | string,
@@ -392,30 +391,27 @@ declare global {
 
   const slot_json: (slotno: number) => ErrorCode | number[]
   const slot: (slotno: number) => ErrorCode | number[]
-  const slot_clear: (slotno: number) => ErrorCode | number[]
-  const slot_count: (slotno: number) => ErrorCode | number[]
-  const slot_set: (
-    kl: number[] | string,
-    slotno: number
-  ) => ErrorCode | number[]
-  const slot_size: (slotno: number) => ErrorCode | number[]
+  const slot_clear: (slotno: number) => ErrorCode | number
+  const slot_count: (slotno: number) => ErrorCode | number
+  const slot_set: (kl: number[] | string, slotno: number) => ErrorCode | number
+  const slot_size: (slotno: number) => ErrorCode | number
   const slot_subarray: (
     parent_slotno: number,
-    array_id: number[] | string,
+    array_id: number,
     new_slotno: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | number
   const slot_subfield: (
     parent_slotno: number,
-    field_id: number[] | string,
+    field_id: number,
     new_slotno: number
-  ) => ErrorCode | number[]
-  const slot_type: (slotno: number, flags: number) => ErrorCode | number[]
-  const slot_float: (slotno: number) => ErrorCode | number[]
-  const meta_slot: (slotno: number) => ErrorCode | number[]
+  ) => ErrorCode | number
+  const slot_type: (slotno: number, flags: number) => ErrorCode | number
+  const slot_float: (slotno: number) => ErrorCode | number
+  const meta_slot: (slotno: number) => ErrorCode | number
   const xpop_slot: (
     slotno_tx: number,
     slotno_meta: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | number
 
   /********************************************************************************************************************* */
   // STATE APIS
@@ -491,7 +487,7 @@ declare global {
   /**
    * Configure the amount of transactions this Hook is allowed to emit.
    *
-   * @param txCount The max. amount of transactions this Hook is allowed to emit in its lifecycle
+   * @param txCount The max amount of transactions this Hook is allowed to emit in its lifecycle
    */
   const etxn_reserve: (txCount: number) => ErrorCode | number
 
