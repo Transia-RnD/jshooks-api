@@ -1,12 +1,9 @@
 import { Payment } from '@transia/xahau-models'
-import { DOESNT_EXIST } from 'jshooks-api'
+import { assert } from 'jshooks-api'
 import { myCustom } from './utils/custom'
 
 const Hook = (arg: any) => {
-  const tx = otxn_json() as Payment
-  if (typeof tx === 'number' && tx === DOESNT_EXIST) {
-    rollback('', DOESNT_EXIST)
-  }
+  const tx = assert(otxn_json()) as Payment
   if (
     tx.TransactionType === 'Payment' &&
     tx.Account === 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
