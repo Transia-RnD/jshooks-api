@@ -315,7 +315,7 @@ declare global {
     abs: number
   ) => ErrorCode | number
   const float_log: (f1: bigint) => ErrorCode | bigint
-  const float_root: (f1: bigintt, n: number) => ErrorCode | bigint
+  const float_root: (f1: bigint, n: number) => ErrorCode | bigint
 
   /********************************************************************************************************************* */
   // STO APIS
