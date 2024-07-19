@@ -19,7 +19,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@tsconfig/node16": "^16.1.3",
-    "jshooks-api": "^1.0.4",
+    "jshooks-api": "^1.0.5",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
