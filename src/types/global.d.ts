@@ -277,7 +277,9 @@ declare global {
 
   const otxn_slot: (slotno: number) => ErrorCode | number[]
   const otxn_field: (field_id: number) => ErrorCode | number[]
-  const otxn_json: () => ErrorCode | Record<string, any> | Transaction // Triggering transaction
+  const otxn_json: () => ErrorCode | Record<string, any> | Transaction // Triggering transactio
+  const otxn_burden: () => ErrorCode | number
+  const otxn_generation: () => number
 
   /********************************************************************************************************************* */
   // FLOAT APIS
@@ -386,6 +388,7 @@ declare global {
   const ledger_last_time: () => ErrorCode | number
   const ledger_nonce: () => ErrorCode | number[]
   const ledger_seq: () => ErrorCode | number
+  const fee_base: () => number
 
   /********************************************************************************************************************* */
   // SLOT APIS
@@ -483,7 +486,9 @@ declare global {
    *
    * @param txJson The TX JSON to emit
    */
-  const emit: (txJson: Record<string, any> | Transaction) => ErrorCode | number
+  const emit: (
+    txJson: Record<string, any> | Transaction
+  ) => ErrorCode | number[]
 
   /**
    * Configure the amount of transactions this Hook is allowed to emit.
@@ -493,6 +498,14 @@ declare global {
   const etxn_reserve: (txCount: number) => ErrorCode | number
 
   const etxn_fee_base: (txblob: number[] | string) => ErrorCode | number
+
+  const etxn_burden: () => ErrorCode | number
+
+  const etxn_details: () => ErrorCode | number[]
+
+  const etxn_nonce: () => ErrorCode | number[]
+
+  const etxn_generation: () => ErrorCode | number
 }
 
 export {}
