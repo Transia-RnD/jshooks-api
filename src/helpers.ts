@@ -1,4 +1,6 @@
 import { DOESNT_EXIST } from './error'
+import { KEYLET_ACCOUNT, KEYLET_LINE } from './keylets'
+import { sfBalance } from './sfcodes'
 
 // Types
 type Bool = boolean
@@ -182,4 +184,30 @@ export const fallback = <T>(data: T, codes: number[] = [DOESNT_EXIST]) => {
     rollback('api.error', data)
   }
   return data as Exclude<T, number> extends never ? T : Exclude<T, number>
+}
+
+export const balance = (account: number[] | string) => {
+  const keylet = util_keylet(KEYLET_ACCOUNT, account)
+  if (slot_set(keylet as number[], 1) != 1)
+    accept('keylet.c: Could not load account keylet', 0)
+
+  if (slot_subfield(1, sfBalance, 1) != 1)
+    accept('keylet.c: Could not load account keylet `sfBalance`', 0)
+
+  return float_int(slot_float(1), 0, 1)
+}
+
+export const iouBalance = (
+  account: number[] | string,
+  currency?: number[] | string,
+  issuer?: number[] | string
+) => {
+  const keylet = util_keylet(KEYLET_LINE, account, currency, issuer)
+  if (slot_set(keylet as number[], 1) != 1)
+    accept('keylet.c: Could not load line keylet', 0)
+
+  if (slot_subfield(1, sfBalance, 1) != 1)
+    accept('keylet.c: Could not load line keylet `sfBalance`', 0)
+
+  return float_int(slot_float(1), 0, 1)
 }
