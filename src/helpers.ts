@@ -129,10 +129,11 @@ export const encodeArray = (a: number[]) => {
     .toUpperCase()
 }
 
-export function decodeArray(a: number[]): string {
+export const decodeString = decodeArray
+export function decodeArray(a: number[] | string): string {
   let s = ''
   for (let i = 0; i < a.length; i++) {
-    s += String.fromCharCode(a[i])
+    s += String.fromCharCode(Number(a[i]))
   }
   return s
 }
