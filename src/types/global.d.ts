@@ -96,6 +96,9 @@ export type ErrorCode =
   | typeof TOO_MANY_STATE_MODIFICATIONS
   | typeof TOO_MANY_NAMESPACES
 
+export type ByteArray = number[]
+export type HexString = string
+
 declare global {
   /********************************************************************************************************************* */
 
@@ -184,7 +187,7 @@ declare global {
    * @param raddress The r-address to format as HEX account ID.
    * @returns ErrorCode if there is an error in formatting, otherwise returns the HEX Account ID as an array of numbers.
    */
-  const util_accid: (raddress: string) => ErrorCode | number[]
+  const util_accid: (raddress: string) => ErrorCode | ByteArray
 
   /**
    * Format an Account ID as r-address.
@@ -194,7 +197,7 @@ declare global {
    * @param accountid The HEX account ID to return as r-address, can be provided as an array of numbers or a string.
    * @returns ErrorCode if there is an error in formatting, otherwise returns the r-address as a string.
    */
-  const util_raddr: (accountid: number[] | string) => ErrorCode | string
+  const util_raddr: (accountid: ByteArray | HexString) => ErrorCode | string
 
   /**
    * Verify a cryptographic signature.
@@ -208,9 +211,9 @@ declare global {
    * @returns 1 if validation succeeded (the signature is valid), 0 if the signature is invalid.
    */
   const util_verify: (
-    signedData: number[] | string,
-    signature: number[] | string,
-    pubkey: number[] | string
+    signedData: ByteArray | HexString,
+    signature: ByteArray | HexString,
+    pubkey: ByteArray | HexString
   ) => 0 | 1
 
   /**
@@ -221,7 +224,7 @@ declare global {
    * @param data The data to compute the hash over, can be provided as an array of numbers or a string.
    * @returns ErrorCode if there is an error in computing the hash, otherwise returns the SHA512-half hash as an array of numbers.
    */
-  const util_sha512h: (data: number[] | string) => ErrorCode | number[]
+  const util_sha512h: (data: ByteArray | HexString) => ErrorCode | ByteArray
 
   /**
    * Create a keylet based on the specified type and data.
@@ -236,10 +239,10 @@ declare global {
    */
   const util_keylet: (
     keylet_type: number,
-    keylet_data_a?: number[] | string | number,
-    keylet_data_b?: number[] | string | number,
-    keylet_data_c?: number[] | string | number
-  ) => ErrorCode | number[]
+    keylet_data_a?: ByteArray | HexString | number,
+    keylet_data_b?: ByteArray | HexString | number,
+    keylet_data_c?: ByteArray | HexString | number
+  ) => ErrorCode | ByteArray
 
   /********************************************************************************************************************* */
   // HOOK APIS
@@ -249,7 +252,7 @@ declare global {
    *
    * @returns The Account ID the Hook is executing on, or an error code if the retrieval fails.
    */
-  const hook_account: () => ErrorCode | number[]
+  const hook_account: () => ErrorCode | ByteArray
 
   /**
    * Look up the hash of the hook installed on the hook account at the specified position.
@@ -257,7 +260,7 @@ declare global {
    * @param hookno - The position in the hook chain the hook is located at, or -1 for the currently executing hook.
    * @returns The Namespace biased SHA512H of the currently executing Hook, or an error code if the lookup fails.
    */
-  const hook_hash: (hookno: number) => ErrorCode | number[]
+  const hook_hash: (hookno: number) => ErrorCode | ByteArray
 
   /**
    * Set a parameter for the hook with the specified value and key, and associate it with a hash.
@@ -268,9 +271,9 @@ declare global {
    * @returns A status code indicating the result of the operation.
    */
   const hook_param_set: (
-    val: number[] | string,
-    key: number[] | string,
-    hash: number[] | string
+    val: ByteArray | HexString,
+    key: ByteArray | HexString,
+    hash: ByteArray | HexString
   ) => number
 
   /**
@@ -279,7 +282,7 @@ declare global {
    * @param key - The key for which to retrieve the parameter value.
    * @returns The value associated with the key, or an error code if the retrieval fails.
    */
-  const hook_param: (key: number[] | string) => ErrorCode | number[]
+  const hook_param: (key: ByteArray | HexString) => ErrorCode | ByteArray
 
   /**
    * Skip the execution of a hook based on the provided hash and flag.
@@ -288,7 +291,10 @@ declare global {
    * @param flag - A flag indicating the reason for skipping the hook.
    * @returns A status code indicating the result of the operation.
    */
-  const hook_skip: (hash: number[] | string, flag: number) => ErrorCode | number
+  const hook_skip: (
+    hash: ByteArray | HexString,
+    flag: number
+  ) => ErrorCode | number
 
   /**
    * Retrieve the current position in the hook chain.
@@ -310,10 +316,10 @@ declare global {
   /**
    * Look up the value for a named parameter specified on the originating transaction.
    *
-   * @param name - The name of the parameter to look up, specified as a number[] or string.
+   * @param name - The name of the parameter to look up, specified as a ByteArray or string.
    * @returns The value of the specified parameter, or an ErrorCode if the lookup fails.
    */
-  const otxn_param: (name: number[] | string) => ErrorCode | number[]
+  const otxn_param: (name: ByteArray | HexString) => ErrorCode | ByteArray
 
   /**
    * Return the Transaction Type of the originating transaction.
@@ -329,7 +335,7 @@ declare global {
    *               while flag 1 (and emit_failure) returns the hash of the emitting transaction (default: 0).
    * @returns The transaction hash as an array of numbers, or an ErrorCode if the retrieval fails.
    */
-  const otxn_id: (flag?: number) => ErrorCode | number[]
+  const otxn_id: (flag?: number) => ErrorCode | ByteArray
 
   /**
    * Retrieve the value associated with a specific slot number in the originating transaction.
@@ -338,7 +344,7 @@ declare global {
    * @returns The value associated with the specified slot number as an array of numbers,
    *          or an ErrorCode if the lookup fails.
    */
-  const otxn_slot: (slotno: number) => ErrorCode | number[]
+  const otxn_slot: (slotno: number) => ErrorCode | ByteArray
 
   /**
    * Retrieve the value of a specific field in the originating transaction.
@@ -347,7 +353,7 @@ declare global {
    * @returns The value of the specified field as an array of numbers,
    *          or an ErrorCode if the lookup fails.
    */
-  const otxn_field: (field_id: number) => ErrorCode | number[]
+  const otxn_field: (field_id: number) => ErrorCode | ByteArray
 
   /**
    * Output the originating transaction in JSON format.
@@ -448,18 +454,18 @@ declare global {
    * @returns An error code or the updated value as an array of numbers.
    */
   const float_sto: (
-    cur: number[] | string | undefined,
-    isu: number[] | string | undefined,
+    cur: ByteArray | HexString | undefined,
+    isu: ByteArray | HexString | undefined,
     f1: bigint,
     field_code: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | ByteArray
 
   /**
    * Sets the buffer for storing float representations.
    * @param buf - The buffer to set.
    * @returns An error code or the result as a number.
    */
-  const float_sto_set: (buf: number[] | string) => ErrorCode | number
+  const float_sto_set: (buf: ByteArray | HexString) => ErrorCode | number
 
   /**
    * Inverts a float representation.
@@ -530,7 +536,7 @@ declare global {
    * @returns Decoded JSON representation of the STO object, or an error code if the conversion fails.
    */
   const sto_to_json: (
-    blob: number[] | string
+    blob: ByteArray | HexString
   ) => ErrorCode | Record<string, any> | Transaction
 
   /**
@@ -541,7 +547,7 @@ declare global {
    * @param blob The blob (e.g. serialized transaction) to be validated.
    * @returns Returns number 1 if the STObject is valid, 0 if it isn't, or an error code if validation fails.
    */
-  const sto_validate: (blob: number[] | string) => ErrorCode | number
+  const sto_validate: (blob: ByteArray | HexString) => ErrorCode | number
 
   /**
    * Format JSON as an STO object (binary encoded ledger data).
@@ -553,7 +559,7 @@ declare global {
    */
   const sto_from_json: (
     jsonobj: Record<string, any> | Transaction
-  ) => ErrorCode | number[]
+  ) => ErrorCode | ByteArray
 
   /**
    * Retrieve a subfield from an STO object.
@@ -565,7 +571,7 @@ declare global {
    * @returns The value of the specified subfield, or an error code if the extraction fails.
    */
   const sto_subfield: (
-    sto: number[] | string,
+    sto: ByteArray | HexString,
     field_id: number
   ) => ErrorCode | number
 
@@ -579,7 +585,7 @@ declare global {
    * @returns The value of the specified subarray, or an error code if the extraction fails.
    */
   const sto_subarray: (
-    sto: number[] | string,
+    sto: ByteArray | HexString,
     array_id: number
   ) => ErrorCode | number
 
@@ -594,10 +600,10 @@ declare global {
    * @returns The updated STO object in binary encoded ledger data format, or an error code if the operation fails.
    */
   const sto_emplace: (
-    sto: number[] | string,
-    field_bytes: number[] | string,
+    sto: ByteArray | HexString,
+    field_bytes: ByteArray | HexString,
     field_id: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | ByteArray
 
   /**
    * Erase a field from an STO object.
@@ -609,9 +615,9 @@ declare global {
    * @returns The updated STO object in binary encoded ledger data format, or an error code if the operation fails.
    */
   const sto_erase: (
-    sto: number[] | string,
+    sto: ByteArray | HexString,
     field_id: number
-  ) => ErrorCode | number[]
+  ) => ErrorCode | ByteArray
 
   /********************************************************************************************************************* */
   // LEDGER APIS
@@ -625,15 +631,15 @@ declare global {
    * @returns Returns the number of bytes written (34 bytes) on success, or an error code if an error occurs.
    */
   const ledger_keylet: (
-    low: number[] | string,
-    high: number[] | string
-  ) => ErrorCode | number[]
+    low: ByteArray | HexString,
+    high: ByteArray | HexString
+  ) => ErrorCode | ByteArray
 
   /**
    * Retrieves the hash of the last ledger.
    * @returns Returns an error code if an error occurs, or an array representing the hash of the last ledger.
    */
-  const ledger_last_hash: () => ErrorCode | number[]
+  const ledger_last_hash: () => ErrorCode | ByteArray
 
   /**
    * Retrieves the timestamp of the last ledger.
@@ -645,7 +651,7 @@ declare global {
    * Retrieves the nonce of the current ledger.
    * @returns Returns an error code if an error occurs, or an array representing the nonce of the current ledger.
    */
-  const ledger_nonce: () => ErrorCode | number[]
+  const ledger_nonce: () => ErrorCode | ByteArray
 
   /**
    * Retrieves the sequence number of the current ledger.
@@ -667,14 +673,14 @@ declare global {
    * @param slotno - The slot number to retrieve.
    * @returns Returns an error code or the slot's JSON data.
    */
-  const slot_json: (slotno: number) => ErrorCode | number[]
+  const slot_json: (slotno: number) => ErrorCode | ByteArray
 
   /**
    * Retrieves the data associated with the specified slot.
    * @param slotno - The slot number to retrieve.
    * @returns Returns an error code or the slot's data.
    */
-  const slot: (slotno: number) => ErrorCode | number[]
+  const slot: (slotno: number) => ErrorCode | ByteArray
 
   /**
    * Clears the data in the specified slot.
@@ -696,7 +702,10 @@ declare global {
    * @param slotno - The slot number to set data for.
    * @returns Returns an error code or the result of the set operation.
    */
-  const slot_set: (kl: number[] | string, slotno: number) => ErrorCode | number
+  const slot_set: (
+    kl: ByteArray | HexString,
+    slotno: number
+  ) => ErrorCode | number
 
   /**
    * Retrieves the size of the specified slot.
@@ -772,7 +781,7 @@ declare global {
    * @param key - The key of the Hook State to retrieve the value from.
    * @returns Returns an error code or the Hook State value for the key.
    */
-  const state: (key: number[] | string) => ErrorCode | number[]
+  const state: (key: ByteArray | HexString) => ErrorCode | ByteArray
 
   /**
    * Sets the Hook State with the specified value and key.
@@ -781,8 +790,8 @@ declare global {
    * @returns Returns the number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_set: (
-    value: number[] | string | undefined | null,
-    key: number[] | string
+    value: ByteArray | HexString | undefined | null,
+    key: ByteArray | HexString
   ) => ErrorCode | number
 
   /**
@@ -793,10 +802,10 @@ declare global {
    * @returns Returns an error code or the Hook State value for the key.
    */
   const state_foreign: (
-    key: number[] | string,
-    namespace: number[] | string | undefined | null,
-    accountid: number[] | string | undefined | null
-  ) => ErrorCode | number[]
+    key: ByteArray | HexString,
+    namespace: ByteArray | HexString | undefined | null,
+    accountid: ByteArray | HexString | undefined | null
+  ) => ErrorCode | ByteArray
 
   /**
    * Sets the Foreign Hook State with the specified value, key, namespace, and account ID.
@@ -808,10 +817,10 @@ declare global {
    * @returns Returns the number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_foreign_set: (
-    value: number[] | string | undefined | null,
-    key: number[] | string,
-    namespace: number[] | string | undefined | null,
-    accountid: number[] | string | undefined | null
+    value: ByteArray | HexString | undefined | null,
+    key: ByteArray | HexString,
+    namespace: ByteArray | HexString | undefined | null,
+    accountid: ByteArray | HexString | undefined | null
   ) => ErrorCode | number
 
   /********************************************************************************************************************* */
@@ -843,7 +852,7 @@ declare global {
    */
   const emit: (
     txJson: Record<string, any> | Transaction
-  ) => ErrorCode | number[]
+  ) => ErrorCode | ByteArray
 
   /**
    * Configures the maximum number of transactions this Hook is allowed to emit.
@@ -864,7 +873,7 @@ declare global {
    * @param txblob - The transaction blob, which can be an array of numbers or a string.
    * @returns An ErrorCode if there is an error, or the calculated base fee on success.
    */
-  const etxn_fee_base: (txblob: number[] | string) => ErrorCode | number
+  const etxn_fee_base: (txblob: ByteArray | HexString) => ErrorCode | number
 
   /**
    * Gets the burden of the transaction.
@@ -882,7 +891,7 @@ declare global {
    *
    * @returns An ErrorCode if there is an error, or an array of transaction details on success.
    */
-  const etxn_details: () => ErrorCode | number[]
+  const etxn_details: () => ErrorCode | ByteArray
 
   /**
    * Gets the nonce for the transaction.
@@ -891,7 +900,7 @@ declare global {
    *
    * @returns An ErrorCode if there is an error, or an array containing the nonce value on success.
    */
-  const etxn_nonce: () => ErrorCode | number[]
+  const etxn_nonce: () => ErrorCode | ByteArray
 
   /**
    * Generates a new transaction.
