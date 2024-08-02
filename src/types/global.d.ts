@@ -247,25 +247,25 @@ declare global {
   /**
    * Retrieve the 20 byte Account ID the Hook is executing on.
    *
-   * @returns {ErrorCode | number[]} The Account ID the Hook is executing on, or an error code if the retrieval fails.
+   * @returns The Account ID the Hook is executing on, or an error code if the retrieval fails.
    */
   const hook_account: () => ErrorCode | number[]
 
   /**
    * Look up the hash of the hook installed on the hook account at the specified position.
    *
-   * @param {number} hookno - The position in the hook chain the hook is located at, or -1 for the currently executing hook.
-   * @returns {ErrorCode | number[]} The Namespace biased SHA512H of the currently executing Hook, or an error code if the lookup fails.
+   * @param hookno - The position in the hook chain the hook is located at, or -1 for the currently executing hook.
+   * @returns The Namespace biased SHA512H of the currently executing Hook, or an error code if the lookup fails.
    */
   const hook_hash: (hookno: number) => ErrorCode | number[]
 
   /**
    * Set a parameter for the hook with the specified value and key, and associate it with a hash.
    *
-   * @param {number[] | string} val - The value to set for the parameter.
-   * @param {number[] | string} key - The key associated with the parameter.
-   * @param {number[] | string} hash - The hash to associate with the parameter.
-   * @returns {number} A status code indicating the result of the operation.
+   * @param val - The value to set for the parameter.
+   * @param key - The key associated with the parameter.
+   * @param hash - The hash to associate with the parameter.
+   * @returns A status code indicating the result of the operation.
    */
   const hook_param_set: (
     val: number[] | string,
@@ -276,31 +276,31 @@ declare global {
   /**
    * Retrieve the value of a parameter associated with the specified key.
    *
-   * @param {number[] | string} key - The key for which to retrieve the parameter value.
-   * @returns {ErrorCode | number[]} The value associated with the key, or an error code if the retrieval fails.
+   * @param key - The key for which to retrieve the parameter value.
+   * @returns The value associated with the key, or an error code if the retrieval fails.
    */
   const hook_param: (key: number[] | string) => ErrorCode | number[]
 
   /**
    * Skip the execution of a hook based on the provided hash and flag.
    *
-   * @param {number[] | string} hash - The hash of the hook to skip.
-   * @param {number} flag - A flag indicating the reason for skipping the hook.
-   * @returns {ErrorCode | number} A status code indicating the result of the operation.
+   * @param hash - The hash of the hook to skip.
+   * @param flag - A flag indicating the reason for skipping the hook.
+   * @returns A status code indicating the result of the operation.
    */
   const hook_skip: (hash: number[] | string, flag: number) => ErrorCode | number
 
   /**
    * Retrieve the current position in the hook chain.
    *
-   * @returns {ErrorCode | number} The current position in the hook chain, or an error code if the retrieval fails.
+   * @returns The current position in the hook chain, or an error code if the retrieval fails.
    */
   const hook_pos: () => ErrorCode | number
 
   /**
    * Re-execute the current hook.
    *
-   * @returns {ErrorCode | number} A status code indicating the result of the operation.
+   * @returns A status code indicating the result of the operation.
    */
   const hook_again: () => ErrorCode | number
 
@@ -376,33 +376,33 @@ declare global {
 
   /**
    * Retrieves the float representation of a number.
-   * @returns {ErrorCode | bigint} An error code or the float representation as a bigint.
+   * @returns An error code or the float representation as a bigint.
    */
   const float_one: () => ErrorCode | bigint
 
   /**
    * Sets the exponent and mantissa for a float representation.
-   * @param {number} exponent - The exponent to set.
-   * @param {number} mantissa - The mantissa to set.
-   * @returns {ErrorCode | bigint} An error code or the resulting bigint.
+   * @param exponent - The exponent to set.
+   * @param mantissa - The mantissa to set.
+   * @returns An error code or the resulting bigint.
    */
   const float_set: (exponent: number, mantissa: number) => ErrorCode | bigint
 
   /**
    * Multiplies two float representations.
-   * @param {bigint} f1 - The first float as a bigint.
-   * @param {bigint} f2 - The second float as a bigint.
-   * @returns {ErrorCode | bigint} An error code or the product as a bigint.
+   * @param f1 - The first float as a bigint.
+   * @param f2 - The second float as a bigint.
+   * @returns An error code or the product as a bigint.
    */
   const float_multiply: (f1: bigint, f2: bigint) => ErrorCode | bigint
 
   /**
    * Multiplies a float by a ratio defined by a numerator and denominator.
-   * @param {bigint} f1 - The float to multiply.
-   * @param {number} round_up - Indicates whether to round up.
-   * @param {number} numerator - The numerator of the ratio.
-   * @param {number} denominator - The denominator of the ratio.
-   * @returns {ErrorCode | bigint} An error code or the resulting bigint.
+   * @param f1 - The float to multiply.
+   * @param round_up - Indicates whether to round up.
+   * @param numerator - The numerator of the ratio.
+   * @param denominator - The denominator of the ratio.
+   * @returns An error code or the resulting bigint.
    */
   const float_mulratio: (
     f1: bigint,
@@ -413,17 +413,17 @@ declare global {
 
   /**
    * Negates a float representation.
-   * @param {bigint} f1 - The float to negate.
-   * @returns {ErrorCode | bigint} An error code or the negated float as a bigint.
+   * @param f1 - The float to negate.
+   * @returns An error code or the negated float as a bigint.
    */
   const float_negate: (f1: bigint) => ErrorCode | bigint
 
   /**
    * Compares two float representations.
-   * @param {bigint} f1 - The first float to compare.
-   * @param {bigint} f2 - The second float to compare.
-   * @param {number} mode - The comparison mode (e.g., less than, equal to, greater than).
-   * @returns {ErrorCode | number} An error code or the comparison result as a number.
+   * @param f1 - The first float to compare.
+   * @param f2 - The second float to compare.
+   * @param mode - The comparison mode (e.g., less than, equal to, greater than).
+   * @returns An error code or the comparison result as a number.
    */
   const float_compare: (
     f1: bigint,
@@ -433,19 +433,19 @@ declare global {
 
   /**
    * Sums two float representations.
-   * @param {bigint} f1 - The first float to sum.
-   * @param {bigint} f2 - The second float to sum.
-   * @returns {ErrorCode | bigint} An error code or the sum as a bigint.
+   * @param f1 - The first float to sum.
+   * @param f2 - The second float to sum.
+   * @returns An error code or the sum as a bigint.
    */
   const float_sum: (f1: bigint, f2: bigint) => ErrorCode | bigint
 
   /**
    * Stores a float representation into a specified field.
-   * @param {number[] | string | undefined} cur - The current value to store into.
-   * @param {number[] | string | undefined} isu - The value to store.
-   * @param {bigint} f1 - The float to store.
-   * @param {number} field_code - The field code indicating where to store the float.
-   * @returns {ErrorCode | number[]} An error code or the updated value as an array of numbers.
+   * @param cur - The current value to store into.
+   * @param isu - The value to store.
+   * @param f1 - The float to store.
+   * @param field_code - The field code indicating where to store the float.
+   * @returns An error code or the updated value as an array of numbers.
    */
   const float_sto: (
     cur: number[] | string | undefined,
@@ -456,46 +456,46 @@ declare global {
 
   /**
    * Sets the buffer for storing float representations.
-   * @param {number[] | string} buf - The buffer to set.
-   * @returns {ErrorCode | number} An error code or the result as a number.
+   * @param buf - The buffer to set.
+   * @returns An error code or the result as a number.
    */
   const float_sto_set: (buf: number[] | string) => ErrorCode | number
 
   /**
    * Inverts a float representation.
-   * @param {bigint} f1 - The float to invert.
-   * @returns {ErrorCode | bigint} An error code or the inverted float as a bigint.
+   * @param f1 - The float to invert.
+   * @returns An error code or the inverted float as a bigint.
    */
   const float_invert: (f1: bigint) => ErrorCode | bigint
 
   /**
    * Divides one float representation by another.
-   * @param {bigint} f1 - The dividend float.
-   * @param {bigint} f2 - The divisor float.
-   * @returns {ErrorCode | bigint} An error code or the quotient as a bigint.
+   * @param f1 - The dividend float.
+   * @param f2 - The divisor float.
+   * @returns An error code or the quotient as a bigint.
    */
   const float_divide: (f1: bigint, f2: bigint) => ErrorCode | bigint
 
   /**
    * Retrieves the mantissa of a float representation.
-   * @param {bigint} f1 - The float to retrieve the mantissa from.
-   * @returns {ErrorCode | bigint} An error code or the mantissa as a bigint.
+   * @param f1 - The float to retrieve the mantissa from.
+   * @returns An error code or the mantissa as a bigint.
    */
   const float_mantissa: (f1: bigint) => ErrorCode | bigint
 
   /**
    * Retrieves the sign of a float representation.
-   * @param {bigint} f1 - The float to check the sign of.
-   * @returns {ErrorCode | bigint} An error code or the sign as a bigint.
+   * @param f1 - The float to check the sign of.
+   * @returns An error code or the sign as a bigint.
    */
   const float_sign: (f1: bigint) => ErrorCode | bigint
 
   /**
    * Converts a float representation to an integer with specified decimal places.
-   * @param {bigint} f1 - The float to convert.
-   * @param {number} decimal_places - The number of decimal places to consider.
-   * @param {number} abs - Indicates whether to take the absolute value.
-   * @returns {ErrorCode | number} An error code or the resulting integer as a number.
+   * @param f1 - The float to convert.
+   * @param decimal_places - The number of decimal places to consider.
+   * @param abs - Indicates whether to take the absolute value.
+   * @returns An error code or the resulting integer as a number.
    */
   const float_int: (
     f1: bigint,
@@ -505,16 +505,16 @@ declare global {
 
   /**
    * Calculates the logarithm of a float representation.
-   * @param {bigint} f1 - The float to calculate the logarithm of.
-   * @returns {ErrorCode | bigint} An error code or the logarithm as a bigint.
+   * @param f1 - The float to calculate the logarithm of.
+   * @returns An error code or the logarithm as a bigint.
    */
   const float_log: (f1: bigint) => ErrorCode | bigint
 
   /**
    * Calculates the nth root of a float representation.
-   * @param {bigint} f1 - The float to calculate the root of.
-   * @param {number} n - The degree of the root to calculate.
-   * @returns {ErrorCode | bigint} An error code or the resulting root as a bigint.
+   * @param f1 - The float to calculate the root of.
+   * @param n - The degree of the root to calculate.
+   * @returns An error code or the resulting root as a bigint.
    */
   const float_root: (f1: bigint, n: number) => ErrorCode | bigint
 
@@ -617,12 +617,12 @@ declare global {
   // LEDGER APIS
 
   /**
-   * Search for a keylet within a specified range on the current ledger
-   * Search the ledger for the first (lowest) Keylet of this type in this range
+   * Searches for a keylet within a specified range on the current ledger.
+   * This function searches the ledger for the first (lowest) Keylet of this type in the given range.
    *
-   * @param low Pointer to the 34 byte serialised Keylet that represents the lower boundary of the Keylet range to search
-   * @param high Pointer to the 34 byte serialised Keylet that represents the upper boundary of the Keylet range to search
-   * @returns The number of bytes written (34 bytes) on success
+   * @param low - Pointer to the 34-byte serialized Keylet that represents the lower boundary of the Keylet range to search.
+   * @param high - Pointer to the 34-byte serialized Keylet that represents the upper boundary of the Keylet range to search.
+   * @returns Returns the number of bytes written (34 bytes) on success, or an error code if an error occurs.
    */
   const ledger_keylet: (
     low: number[] | string,
@@ -631,27 +631,32 @@ declare global {
 
   /**
    * Retrieves the hash of the last ledger.
-   * @returns {ErrorCode | number[]} - Returns an error code if an error occurs, or an array representing the hash of the last ledger.
+   * @returns Returns an error code if an error occurs, or an array representing the hash of the last ledger.
    */
   const ledger_last_hash: () => ErrorCode | number[]
 
   /**
    * Retrieves the timestamp of the last ledger.
-   * @returns {ErrorCode | number} - Returns an error code if an error occurs, or a number representing the timestamp of the last ledger.
+   * @returns Returns an error code if an error occurs, or a number representing the timestamp of the last ledger.
    */
   const ledger_last_time: () => ErrorCode | number
 
   /**
    * Retrieves the nonce of the current ledger.
-   * @returns {ErrorCode | number[]} - Returns an error code if an error occurs, or an array representing the nonce of the current ledger.
+   * @returns Returns an error code if an error occurs, or an array representing the nonce of the current ledger.
    */
   const ledger_nonce: () => ErrorCode | number[]
 
   /**
    * Retrieves the sequence number of the current ledger.
-   * @returns {ErrorCode | number} - Returns an error code if an error occurs, or a number representing the sequence number of the current ledger.
+   * @returns Returns an error code if an error occurs, or a number representing the sequence number of the current ledger.
    */
   const ledger_seq: () => ErrorCode | number
+
+  /**
+   * Retrieves the base fee for transactions.
+   * @returns Returns the base fee for transactions.
+   */
   const fee_base: () => number
 
   /********************************************************************************************************************* */
@@ -659,53 +664,53 @@ declare global {
 
   /**
    * Retrieves the JSON representation of the specified slot.
-   * @param {number} slotno - The slot number to retrieve.
-   * @returns {ErrorCode | number[]} - Returns an error code or the slot's JSON data.
+   * @param slotno - The slot number to retrieve.
+   * @returns Returns an error code or the slot's JSON data.
    */
   const slot_json: (slotno: number) => ErrorCode | number[]
 
   /**
    * Retrieves the data associated with the specified slot.
-   * @param {number} slotno - The slot number to retrieve.
-   * @returns {ErrorCode | number[]} - Returns an error code or the slot's data.
+   * @param slotno - The slot number to retrieve.
+   * @returns Returns an error code or the slot's data.
    */
   const slot: (slotno: number) => ErrorCode | number[]
 
   /**
    * Clears the data in the specified slot.
-   * @param {number} slotno - The slot number to clear.
-   * @returns {ErrorCode | number} - Returns an error code or the result of the clear operation.
+   * @param slotno - The slot number to clear.
+   * @returns Returns an error code or the result of the clear operation.
    */
   const slot_clear: (slotno: number) => ErrorCode | number
 
   /**
    * Counts the number of entries in the specified slot.
-   * @param {number} slotno - The slot number to count entries in.
-   * @returns {ErrorCode | number} - Returns an error code or the count of entries.
+   * @param slotno - The slot number to count entries in.
+   * @returns Returns an error code or the count of entries.
    */
   const slot_count: (slotno: number) => ErrorCode | number
 
   /**
    * Sets the data for the specified slot.
-   * @param {number[] | string} kl - The data to set in the slot, can be an array or a string.
-   * @param {number} slotno - The slot number to set data for.
-   * @returns {ErrorCode | number} - Returns an error code or the result of the set operation.
+   * @param kl - The data to set in the slot, can be an array or a string.
+   * @param slotno - The slot number to set data for.
+   * @returns Returns an error code or the result of the set operation.
    */
   const slot_set: (kl: number[] | string, slotno: number) => ErrorCode | number
 
   /**
    * Retrieves the size of the specified slot.
-   * @param {number} slotno - The slot number to check the size of.
-   * @returns {ErrorCode | number} - Returns an error code or the size of the slot.
+   * @param slotno - The slot number to check the size of.
+   * @returns Returns an error code or the size of the slot.
    */
   const slot_size: (slotno: number) => ErrorCode | number
 
   /**
    * Creates a subarray in the specified parent slot.
-   * @param {number} parent_slotno - The parent slot number.
-   * @param {number} array_id - The ID of the array to create a subarray for.
-   * @param {number} new_slotno - The new slot number for the subarray.
-   * @returns {ErrorCode | number} - Returns an error code or the result of the subarray creation.
+   * @param parent_slotno - The parent slot number.
+   * @param array_id - The ID of the array to create a subarray for.
+   * @param new_slotno - The new slot number for the subarray.
+   * @returns Returns an error code or the result of the subarray creation.
    */
   const slot_subarray: (
     parent_slotno: number,
@@ -715,10 +720,10 @@ declare global {
 
   /**
    * Creates a subfield in the specified parent slot.
-   * @param {number} parent_slotno - The parent slot number.
-   * @param {number} field_id - The ID of the field to create a subfield for.
-   * @param {number} new_slotno - The new slot number for the subfield.
-   * @returns {ErrorCode | number} - Returns an error code or the result of the subfield creation.
+   * @param parent_slotno - The parent slot number.
+   * @param field_id - The ID of the field to create a subfield for.
+   * @param new_slotno - The new slot number for the subfield.
+   * @returns Returns an error code or the result of the subfield creation.
    */
   const slot_subfield: (
     parent_slotno: number,
@@ -728,31 +733,31 @@ declare global {
 
   /**
    * Retrieves the type of the specified slot.
-   * @param {number} slotno - The slot number to check the type of.
-   * @param {number} flags - Flags to determine the type.
-   * @returns {ErrorCode | number} - Returns an error code or the type of the slot.
+   * @param slotno - The slot number to check the type of.
+   * @param flags - Flags to determine the type.
+   * @returns Returns an error code or the type of the slot.
    */
   const slot_type: (slotno: number, flags: number) => ErrorCode | number
 
   /**
    * Retrieves the float value associated with the specified slot.
-   * @param {number} slotno - The slot number to retrieve the float value from.
-   * @returns {ErrorCode | number} - Returns an error code or the float value.
+   * @param slotno - The slot number to retrieve the float value from.
+   * @returns Returns an error code or the float value.
    */
   const slot_float: (slotno: number) => ErrorCode | number
 
   /**
    * Retrieves metadata associated with the specified slot.
-   * @param {number} slotno - The slot number to retrieve metadata for.
-   * @returns {ErrorCode | number} - Returns an error code or the slot's metadata.
+   * @param slotno - The slot number to retrieve metadata for.
+   * @returns Returns an error code or the slot's metadata.
    */
   const meta_slot: (slotno: number) => ErrorCode | number
 
   /**
    * Pops the specified transaction and metadata slots.
-   * @param {number} slotno_tx - The transaction slot number to pop.
-   * @param {number} slotno_meta - The metadata slot number to pop.
-   * @returns {ErrorCode | number} - Returns an error code or the result of the pop operation.
+   * @param slotno_tx - The transaction slot number to pop.
+   * @param slotno_meta - The metadata slot number to pop.
+   * @returns Returns an error code or the result of the pop operation.
    */
   const xpop_slot: (
     slotno_tx: number,
@@ -761,20 +766,19 @@ declare global {
 
   /********************************************************************************************************************* */
   // STATE APIS
+
   /**
-   * Get Hook State
-   *
-   * @param key Key of the Hook State
-   * @returns Hook State value for key
+   * Retrieves the Hook State value associated with the specified key.
+   * @param key - The key of the Hook State to retrieve the value from.
+   * @returns Returns an error code or the Hook State value for the key.
    */
   const state: (key: number[] | string) => ErrorCode | number[]
 
   /**
-   * Set Hook State
-   *
-   * @param value The value of data to persist
-   * @param key Key of the Hook State
-   * @returns The number of bytes written to Hook State (the length of the data), negative on error.
+   * Sets the Hook State with the specified value and key.
+   * @param value - The value of data to persist.
+   * @param key - The key of the Hook State to set the value for.
+   * @returns Returns the number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_set: (
     value: number[] | string | undefined | null,
@@ -782,12 +786,11 @@ declare global {
   ) => ErrorCode | number
 
   /**
-   * Get Foreign Hook State (belonging to another account)
-   *
-   * @param key Key of the Hook State
-   * @param namespace The Hook namespace to look in
-   * @param accountid The owner of the state
-   * @returns Hook State value for key
+   * Retrieves the Foreign Hook State value belonging to another account for the specified key.
+   * @param key - The key of the Hook State to retrieve the value from.
+   * @param namespace - The Hook namespace to look in.
+   * @param accountid - The owner of the state.
+   * @returns Returns an error code or the Hook State value for the key.
    */
   const state_foreign: (
     key: number[] | string,
@@ -796,13 +799,13 @@ declare global {
   ) => ErrorCode | number[]
 
   /**
-   * Set Foreign Hook State - Authorized, needs a Grant to allows this
-   *
-   * @param value The value of data to persist
-   * @param key Key of the Hook State
-   * @param namespace The Hook namespace to look in
-   * @param accountid The owner of the state
-   * @returns The number of bytes written to Hook State (the length of the data), negative on error.
+   * Sets the Foreign Hook State with the specified value, key, namespace, and account ID.
+   * This operation requires authorization and a Grant to allow this action.
+   * @param value - The value of data to persist.
+   * @param key - The key of the Hook State to set the value for.
+   * @param namespace - The Hook namespace to look in.
+   * @param accountid - The owner of the state.
+   * @returns Returns the number of bytes written to Hook State (the length of the data), negative on error.
    */
   const state_foreign_set: (
     value: number[] | string | undefined | null,
@@ -815,27 +818,27 @@ declare global {
   // EMIT APIS
 
   /**
-   * Prepare a JSON transaction for being emitted.
+   * Prepares a JSON transaction for emission.
    *
    * This function takes a transaction JSON object and prepares it for emission.
    * The transaction must be complete except for the Account field, which should
    * always be the Hook account.
    *
-   * @param txJson The transaction JSON, must be a complete transaction except for Account (always the Hook account).
-   * @returns An ErrorCode if there is an error, or the prepared transaction JSON or Transaction object.
+   * @param txJson - The transaction JSON, must be a complete transaction except for Account (always the Hook account).
+   * @returns {ErrorCode | Record<string, any> | Transaction} An ErrorCode if there is an error, or the prepared transaction JSON or Transaction object.
    */
   const prepare: (
     txJson: Record<string, any> | Transaction
   ) => ErrorCode | Record<string, any> | Transaction
 
   /**
-   * Emit a transaction.
+   * Emits a transaction.
    *
    * This function emits the provided transaction JSON. On success, it returns
    * the number of emitted transaction hashes. If there is an error, it returns
    * an error code.
    *
-   * @param txJson The TX JSON to emit.
+   * @param txJson - The TX JSON to emit.
    * @returns An ErrorCode if there is an error, or an array of emitted transaction hashes on success.
    */
   const emit: (
@@ -843,28 +846,28 @@ declare global {
   ) => ErrorCode | number[]
 
   /**
-   * Configure the maximum number of transactions this Hook is allowed to emit.
+   * Configures the maximum number of transactions this Hook is allowed to emit.
    *
    * This function sets a limit on the number of transactions that can be emitted
    * by the Hook during its lifecycle.
    *
-   * @param txCount The maximum amount of transactions this Hook is allowed to emit.
+   * @param txCount - The maximum amount of transactions this Hook is allowed to emit.
    * @returns An ErrorCode if there is an error, or the configured transaction count on success.
    */
   const etxn_reserve: (txCount: number) => ErrorCode | number
 
   /**
-   * Calculate the base fee for a transaction.
+   * Calculates the base fee for a transaction.
    *
    * This function computes the base fee for the given transaction blob.
    *
-   * @param txblob The transaction blob, which can be an array of numbers or a string.
+   * @param txblob - The transaction blob, which can be an array of numbers or a string.
    * @returns An ErrorCode if there is an error, or the calculated base fee on success.
    */
   const etxn_fee_base: (txblob: number[] | string) => ErrorCode | number
 
   /**
-   * Get the burden of the transaction.
+   * Gets the burden of the transaction.
    *
    * This function retrieves the current burden associated with the transaction.
    *
@@ -873,7 +876,7 @@ declare global {
   const etxn_burden: () => ErrorCode | number
 
   /**
-   * Retrieve details of the transaction.
+   * Retrieves details of the transaction.
    *
    * This function provides detailed information about the transaction.
    *
@@ -882,7 +885,7 @@ declare global {
   const etxn_details: () => ErrorCode | number[]
 
   /**
-   * Get the nonce for the transaction.
+   * Gets the nonce for the transaction.
    *
    * This function retrieves the nonce associated with the transaction.
    *
@@ -891,7 +894,7 @@ declare global {
   const etxn_nonce: () => ErrorCode | number[]
 
   /**
-   * Generate a new transaction.
+   * Generates a new transaction.
    *
    * This function generates a new transaction and returns a code indicating
    * the result of the generation process.
