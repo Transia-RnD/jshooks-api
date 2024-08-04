@@ -189,26 +189,36 @@ export const fallback = <T>(data: T, codes: number[] = [DOESNT_EXIST]) => {
 
 export const balance = (account: number[] | string) => {
   const keylet = util_keylet(KEYLET_ACCOUNT, account)
-  if (slot_set(keylet as number[], 1) != 1)
-    accept('keylet.c: Could not load account keylet', 0)
+  let slotno = slot_set(keylet as number[], 0)
+  if (slotno < 0)
+    rollback('helpers.balance: Could not load account keylet', slotno)
 
-  if (slot_subfield(1, sfBalance, 1) != 1)
-    accept('keylet.c: Could not load account keylet `sfBalance`', 0)
+  slotno = slot_subfield(slotno, sfBalance, slotno)
+  if (slotno < 0)
+    rollback(
+      'helpers.balance: Could not load account keylet `sfBalance`',
+      slotno
+    )
 
-  return float_int(slot_float(1), 0, 1)
+  return float_int(slot_float(slotno), 0, 1)
 }
 
 export const iouBalance = (
   account: number[] | string,
-  currency?: number[] | string,
-  issuer?: number[] | string
+  currency: number[] | string,
+  issuer: number[] | string
 ) => {
   const keylet = util_keylet(KEYLET_LINE, account, currency, issuer)
-  if (slot_set(keylet as number[], 1) != 1)
-    accept('keylet.c: Could not load line keylet', 0)
+  let slotno = slot_set(keylet as number[], 0)
+  if (slotno < 0)
+    rollback('helpers.iouBalance: Could not load line keylet', slotno)
 
-  if (slot_subfield(1, sfBalance, 1) != 1)
-    accept('keylet.c: Could not load line keylet `sfBalance`', 0)
+  slotno = slot_subfield(slotno, sfBalance, slotno)
+  if (slotno < 0)
+    rollback(
+      'helpers.iouBalance: Could not load line keylet `sfBalance`',
+      slotno
+    )
 
-  return float_int(slot_float(1), 0, 1)
+  return float_int(slot_float(slotno), 0, 1)
 }
