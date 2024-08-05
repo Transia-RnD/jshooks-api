@@ -170,21 +170,28 @@ export const getState = (key: string, isHex = false) => {
   return state(isHex ? key : encodeString(key))
 }
 
+type ExcludeErrorCode<T> = Exclude<T, number> extends never
+  ? T
+  : Exclude<T, number>
+
 export const assert = <T>(data: T) => {
   if (typeof data === 'number' && data < 0) {
     rollback('assert.error', data)
   }
-  return data as Exclude<T, number> extends never ? T : Exclude<T, number>
+  return data as ExcludeErrorCode<T>
 }
 
-export const fallback = <T>(data: T, codes: number[] = [DOESNT_EXIST]) => {
+export const fallback = <T>(
+  data: T,
+  codes: number[] = [DOESNT_EXIST]
+): ExcludeErrorCode<T> | undefined => {
   if (typeof data === 'number' && data < 0) {
     if (codes.includes(data)) {
       return undefined
     }
-    rollback('api.error', data)
+    rollback('fallback.error', data)
   }
-  return data as Exclude<T, number> extends never ? T : Exclude<T, number>
+  return data as ExcludeErrorCode<T>
 }
 
 export const balance = (account: number[] | string) => {
