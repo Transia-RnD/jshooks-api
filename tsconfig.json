@@ -10,7 +10,7 @@
      "target": "ES2020",
      "outDir": "./dist/npm",
      "declaration": true,
-     "declarationMap": false,
+     "declarationMap": true,
      "noImplicitAny": true,
      "noUnusedLocals": true,
      "removeComments": true,
