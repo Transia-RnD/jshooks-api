@@ -206,8 +206,8 @@ export const balance = (account: number[] | string) => {
       'helpers.balance: Could not load account keylet `sfBalance`',
       slotno
     )
-
-  return float_int(slot_float(slotno), 0, 1)
+  // https://github.com/Xahau/xahaud/issues/343
+  return float_int(slot_float(slotno) as unknown as bigint, 0, 1)
 }
 
 export const iouBalance = (
@@ -226,6 +226,6 @@ export const iouBalance = (
       'helpers.iouBalance: Could not load line keylet `sfBalance`',
       slotno
     )
-
-  return float_int(slot_float(slotno), 0, 1)
+  // https://github.com/Xahau/xahaud/issues/343
+  return float_int(slot_float(slotno) as unknown as bigint, 0, 1)
 }
