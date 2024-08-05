@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/npm/src/index.js",
   "files": [
+    "src",
     "dist/**/*"
   ],
   "exports": {
