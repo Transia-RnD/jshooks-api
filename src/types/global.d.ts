@@ -107,10 +107,10 @@ declare global {
    *
    * @param message The 'logging key', message to output before the buffer (can be null)
    * @param data    The data to log
-   * @param hex     (Optional) Should it log formatted in HEX? (default: false)
+   * @param hex     Should it log formatted in HEX?
    * @returns       int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
    */
-  const trace: (message: string | null, data: any, hex?: boolean) => ErrorCode
+  const trace: (message: string | null, data: any, hex: boolean) => ErrorCode
 
   /********************************************************************************************************************* */
 
@@ -154,7 +154,7 @@ declare global {
    *               caller. By convention all Hook APIs return int64_t, but in this
    *               case nothing is returned.
    */
-  const accept: (msg: string, code: number) => ErrorCode
+  function accept(msg: string, code: number): ErrorCode
 
   /********************************************************************************************************************* */
 
