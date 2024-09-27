@@ -600,9 +600,9 @@ declare global {
   /**
    * Retrieves the sign of a float representation.
    * @param f1 - The float to check the sign of.
-   * @returns An error code or the sign as a bigint.
+   * @returns An error code or 0(positive) or 1(negative).
    */
-  function float_sign(f1: bigint): ErrorCode | bigint
+  function float_sign(f1: bigint): ErrorCode | 0 | 1
 
   /**
    * Converts a float representation to an integer with specified decimal places.
@@ -857,11 +857,11 @@ declare global {
   function slot_type(slotno: number, flags: number): ErrorCode | number
 
   /**
-   * Retrieves the float value associated with the specified slot.
-   * @param slotno - The slot number to retrieve the float value from.
-   * @returns Returns an error code or the float value.
+   * Retrieves the bigint value associated with the specified slot.
+   * @param slotno - The slot number to retrieve the bigint value from.
+   * @returns Returns an error code or the bigint value.
    */
-  function slot_float(slotno: number): ErrorCode | number
+  function slot_float(slotno: number): ErrorCode | bigint
 
   /**
    * Retrieves metadata associated with the specified slot.
