@@ -389,3 +389,35 @@ export const decodeBuffer = <const T extends readonly FieldType[]>(
     }
   }) as FieldTypeToValues<Mutable<T>>
 }
+
+export function flipHex(hexString: string): string {
+  let flippedHex = ''
+  for (let i = hexString.length - 2; i >= 0; i -= 2) {
+    flippedHex += hexString.slice(i, i + 2)
+  }
+  return flippedHex
+}
+
+export function hexToXfl(hex: string): any {
+  if (hex === '0000000000000000') {
+    return 0
+  }
+  const value = flipHex(hex)
+  return hexToUInt64(value.slice(0, 16))
+}
+
+export function flipXfl(endian: bigint): string {
+  const hexString = endian.toString(16).toUpperCase()
+  let flippedHex = ''
+  for (let i = hexString.length - 2; i >= 0; i -= 2) {
+    flippedHex += hexString.slice(i, i + 2)
+  }
+  return flippedHex
+}
+
+export function xflToHex(value: any): string {
+  if (value === 0) {
+    return '0000000000000000'
+  }
+  return flipXfl(value)
+}
