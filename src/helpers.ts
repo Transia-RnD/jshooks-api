@@ -33,6 +33,31 @@ export const ASSERT: (
   if (!cond) rollback(`Assertion failed: ${msg}`, code)
 }
 
+export const hex2str = (hex: string) => {
+  const intArr: number[] = []
+  for (let j = 0; j < hex.length; j += 2)
+    intArr.push(Number.parseInt(`0x${hex.slice(j, j + 2)}`, 16))
+  return buf2str(intArr)
+}
+export const str2hex = (str: string) => {
+  return buf2hex(str2buf(str))
+}
+export const buf2str = (arr: number[]) => {
+  return String.fromCodePoint(...arr)
+}
+export const str2buf = (str: string) => {
+  return str.split('').map((c) => c.charCodeAt(0))
+}
+export const buf2hex = (arr: number[]) => {
+  return arr
+    .map((n) => n.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
+}
+export const hex2buf = (hex: string) => {
+  return hex.match(/.{2}/g)!.map((c) => Number.parseInt(c, 16))
+}
+
 export function uint8ToHex(value: UInt8): string {
   if (value < 0 || value > 0xff) {
     throw Error(`Integer ${value} is out of range for uint8 (0-255)`)
@@ -150,7 +175,7 @@ export const uint64FromBigInt = (value: bigint) => {
 
 export const uint64ToBigInt = (value: number[]) => {
   const view = new DataView(new Uint8Array(value).buffer)
-  return Number(view.getBigUint64(0))
+  return BigInt(view.getBigUint64(0))
 }
 
 export function arrayEqual<T>(arr1: T[], arr2: T[]): boolean {
@@ -169,12 +194,27 @@ export const encodeJson = (data: any) => {
     .join('')
 }
 
+export function decodeJson(a: number[]): Record<string, any> {
+  return JSON.parse(decodeArray(a))
+}
+
 export function encodeString(v: string): string {
   let s = ''
   for (let i = 0; i < v.length; i++) {
     s += v.charCodeAt(i).toString(16).padStart(2, '0')
   }
   return s.toUpperCase()
+}
+
+export function decodeString(a: number[] | string): string {
+  let s = ''
+  if (typeof a === 'string') {
+    a = hex2buf(a)
+  }
+  for (let i = 0; i < a.length; i++) {
+    s += String.fromCharCode(Number(a[i]))
+  }
+  return s
 }
 
 export const encodeArray = (a: number[]) => {
@@ -184,17 +224,12 @@ export const encodeArray = (a: number[]) => {
     .toUpperCase()
 }
 
-export const decodeString = decodeArray
 export function decodeArray(a: number[] | string): string {
   let s = ''
   for (let i = 0; i < a.length; i++) {
     s += String.fromCharCode(Number(a[i]))
   }
   return s
-}
-
-export function decodeJson(a: number[]): Record<string, any> {
-  return JSON.parse(decodeArray(a))
 }
 
 export function readFrom(array: number[], startIndex: number, offset: number) {
@@ -355,34 +390,22 @@ export const decodeBuffer = <const T extends readonly FieldType[]>(
 
     switch (type) {
       case 'uint8': {
-        const value = uint8ToNumber(buffer.slice(offset, offset + 1))
-        offset += 1
-        return value
+        return uint8ToNumber(buffer.slice(offset, (offset += 1)))
       }
       case 'uint16': {
-        const value = uint16ToNumber(buffer.slice(offset, offset + 2))
-        offset += 2
-        return value
+        return uint16ToNumber(buffer.slice(offset, (offset += 2)))
       }
       case 'uint32': {
-        const value = uint32ToNumber(buffer.slice(offset, offset + 4))
-        offset += 4
-        return value
+        return uint32ToNumber(buffer.slice(offset, (offset += 4)))
       }
       case 'uint64': {
-        const value = uint64ToBigInt(buffer.slice(offset, offset + 8))
-        offset += 8
-        return value
+        return uint64ToBigInt(buffer.slice(offset, (offset += 8)))
       }
       case 'account': {
-        const value = buffer.slice(offset, offset + 20)
-        offset += 20
-        return value
+        return buffer.slice(offset, (offset += 20))
       }
       case 'hash256': {
-        const value = buffer.slice(offset, offset + 32)
-        offset += 32
-        return value
+        return buffer.slice(offset, (offset += 32))
       }
       default:
         throw new Error('Invalid type')

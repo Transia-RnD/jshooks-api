@@ -25,13 +25,4 @@
      "src/**/*.tsx",
      "src/**/*.json"
    ],
-   "exclude": [
-     "node_modules",
-     "**/*.test.tsx",
-     "**/*.test.ts",
-     "**/*.spec.ts",
-     "build",
-     "dist",
-     "example"
-   ]
 }

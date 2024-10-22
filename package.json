@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "vitest",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src",
     "generate": "npx tsx scripts/generate.mts"
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5"
   }
 }
