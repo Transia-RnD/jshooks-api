@@ -6,6 +6,7 @@ const branch = 'jshooks'
 const fetchFromSource = async (path: string) => await (await fetch(`${baseURL}/${branch}/${path}`)).text()
 
 const txFormats = await fetchFromSource(`src/ripple/protocol/TxFormats.h`)
+const txFlags = await fetchFromSource(`src/ripple/protocol/TxFlags.h`)
 const hookEnum = await fetchFromSource(`src/ripple/app/hook/Enum.h`)
 const sfieldh = await fetchFromSource(`src/ripple/protocol/SField.h`)
 const sfieldcpp = await fetchFromSource(`src/ripple/protocol/impl/SField.cpp`)
@@ -20,6 +21,19 @@ const tts = txFormats
       .replace(/^(.*?) (\[\[.*?\]\]) (.*?)$/, '// $1 $3 // deprecated')
   ).join('\n')
 
+// tfs.ts
+const tfs = txFlags
+  .match(/enum (.+?)Flags : (std::)?uint32_t \{(.+?)\}/gims)!
+  .map(
+    (t) => {
+      const flagGroup =/enum (.*?) :.*?{/g.exec(t)![1]
+      return t
+        .replace(/(.*{)|(}.*)|(    )|(\n)/g, '')
+        .replace(/,/g, '\n')
+        .replace(/(^|\n)(.+?)(\n)/gims, '$1export const $2$3')
+        .replace(/(export const )(.*?)( =)/g, `/** ${flagGroup}.$2 */\n$1$2$3`)
+    }
+  ).join('\n')
 
 // keylets.ts
 const keylets = hookEnum
@@ -68,6 +82,7 @@ const sfcodes = sfieldcpp
   .join('\n')
 
 writeFileSync('src/tts.ts', tts)
+writeFileSync('src/tfs.ts', tfs)
 writeFileSync('src/keylets.ts', keylets)
 writeFileSync('src/error.ts', error)
 writeFileSync('src/sfcodes.ts', sfcodes)
