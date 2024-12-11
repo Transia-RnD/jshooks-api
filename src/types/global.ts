@@ -781,7 +781,7 @@ declare global {
    * @param slotno - The slot number to retrieve.
    * @returns Returns an error code or the slot's JSON data.
    */
-  function slot_json(slotno: number): ErrorCode | ByteArray
+  function slot_json(slotno: number): ErrorCode | Record<string, any>
 
   /**
    * Retrieves the data associated with the specified slot.
