@@ -84,7 +84,8 @@ export const getSkip = (key: ByteArray | HexString) => {
   const keylet = assert(util_keylet(KEYLET_SKIP, key))
   return getLedgerEntry(keylet)
 }
-export const getTrustLine = (
+
+export const getRippleState = (
   highaccountid: ByteArray | HexString,
   lowaccountid: ByteArray | HexString,
   currency: ByteArray | HexString
@@ -94,6 +95,7 @@ export const getTrustLine = (
   )
   return getLedgerEntry<RippleState>(keylet)
 }
+export const getTrustLine = getRippleState
 
 export const getQuality = (
   key: ByteArray | HexString,
@@ -134,12 +136,12 @@ export const getOwnerDir = (accountid: ByteArray | HexString) => {
   return getLedgerEntry(keylet)
 }
 
-export const getSigners = (accountid: ByteArray | HexString) => {
+export const getSignerList = (accountid: ByteArray | HexString) => {
   const keylet = assert(util_keylet(KEYLET_SIGNERS, accountid))
   return getLedgerEntry<SignerList>(keylet)
 }
 
-export const getAccount = (accountid: ByteArray | HexString) => {
+export const getAccountRoot = (accountid: ByteArray | HexString) => {
   const keylet = assert(util_keylet(KEYLET_ACCOUNT, accountid))
   return getLedgerEntry<AccountRoot>(keylet)
 }
@@ -192,7 +194,7 @@ export const getNftOffer = (
   return getLedgerEntry(keylet)
 }
 
-export const getPayChan = (
+export const getPayChannel = (
   src_accountid: ByteArray | HexString,
   dst_accountid: ByteArray | HexString
 ) => {
