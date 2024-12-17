@@ -1,4 +1,5 @@
 import type {
+  URIToken,
   AccountRoot,
   Amendments,
   Check,
@@ -15,7 +16,7 @@ import type {
   RippleState,
   SignerList,
 } from '@transia/xahau-models/dist/models/ledger'
-import { assert, fallback } from './helpers'
+import { assert, encodeArray, fallback } from './helpers'
 import type { ByteArray, HexString } from './types/global'
 import {
   KEYLET_ACCOUNT,
@@ -202,4 +203,16 @@ export const getPayChannel = (
     util_keylet(KEYLET_PAYCHAN, src_accountid, dst_accountid)
   )
   return getLedgerEntry<PayChannel>(keylet)
+}
+
+export const getURIToken = (
+  accountid: ByteArray | HexString,
+  uri: ByteArray | HexString
+) => {
+  const hexed_accountid =
+    typeof accountid === 'string' ? accountid : encodeArray(accountid)
+  const hexed_uri = typeof uri === 'string' ? uri : encodeArray(uri)
+  const index = assert(util_sha512h(`0055${hexed_accountid}${hexed_uri}`))
+  const keylet = [0x00, 0x55, ...index]
+  return getLedgerEntry<URIToken>(keylet)
 }
