@@ -452,7 +452,7 @@ declare global {
    * @returns The value associated with the specified slot number as an array of numbers,
    *          or an ErrorCode if the lookup fails.
    */
-  function otxn_slot(slotno: number): ErrorCode | ByteArray
+  function otxn_slot(slotno: number): ErrorCode | number
 
   /**
    * Retrieve the value of a specific field in the originating transaction.
