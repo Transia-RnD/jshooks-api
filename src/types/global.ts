@@ -571,9 +571,9 @@ declare global {
   /**
    * Sets the buffer for storing float representations.
    * @param buf - The buffer to set.
-   * @returns An error code or the result as a number.
+   * @returns An error code or the result as a bigint.
    */
-  function float_sto_set(buf: ByteArray | HexString): ErrorCode | number
+  function float_sto_set(buf: ByteArray | HexString): ErrorCode | bigint
 
   /**
    * Inverts a float representation.
